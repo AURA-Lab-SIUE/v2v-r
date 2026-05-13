@@ -5,15 +5,19 @@
 \alias{twitch_chat_sample}
 \title{Twitch chat-message sample}
 \format{
-A tibble with 48,000 rows and 5 variables:
+A tibble with ~35,000 rows and 5 variables:
 \describe{
-\item{id}{integer; surrogate primary key from the source database}
-\item{channel}{character; one of \code{xqcow}, \code{forsen}, \code{sodapoppin},
-\code{asmongold}, \code{loltyler1}, \code{disguisedtoast}, \code{giantwaffle},
-\code{bobross}. In the raw dump these are prefixed with \verb{#} (IRC
-convention); the prefix has been stripped in this fixture so that
-\code{channel} joins cleanly to \link{twitch_streams_sample}. Recovering the
-IRC representation is a Chapter 11 exercise.}
+\item{id}{integer; surrogate primary key from the source database.}
+\item{channel}{character; one of 50 distinct channels. Eight are
+\strong{anchor channels} referenced repeatedly throughout the textbook:
+\code{xqcow}, \code{forsen}, \code{sodapoppin}, \code{asmongold}, \code{loltyler1},
+\code{disguisedtoast}, \code{giantwaffle}, \code{bobross}. The remaining 42 are
+drawn from the chat-volume distribution as a stratified random
+sample, ensuring the broader Twitch ecology is visible. In the
+raw dump these channel names are prefixed with \verb{#} (IRC
+convention); the prefix has been stripped here so that \code{channel}
+joins cleanly to \link{twitch_streams_sample}. Recovering the IRC
+representation is a Chapter 11 exercise.}
 \item{sender}{character; pseudonymous Twitch username, public on the
 IRC feed.}
 \item{message}{character; UTF-8 message text, up to 509 characters.
@@ -29,18 +33,26 @@ Convert with \code{\link[=clean_dates]{clean_dates()}} or
 1.6 GB pg_dump custom-format archive at
 \verb{D:/hub/archive/grad-school/dissertation/twitch_backup.sql}
 (Alex Leith dissertation backup, November 2018). Sampled with
-\code{set.seed(20261113)}. See the V2V data report at
-\code{inst/extdata/v2v-data-report.md} for the full extraction pipeline,
-focal-channel rationale, and chapter-keyed analytical results.
+\code{set.seed(20261113)}. See \code{data-raw/manifest.json} (or the V2V data
+report) for the full sampling design, per-channel breakdown, and
+chapter-keyed analytical results.
 }
 \usage{
 twitch_chat_sample
 }
 \description{
-A stratified random sample of 48,000 chat messages, 6,000 per channel,
-drawn from a 21.96-million-row November 2018 Twitch IRC dump. The 8 focal
-channels span the pedagogically useful variation axes: gaming versus
-non-gaming, peak-audience size, sender concentration, and snapshot
-density.
+A stratified random sample of ~35,000 chat messages from 50 Twitch
+channels active in the November 18-24, 2018 window. The 50 channels
+are drawn from a population of 1,690 channels with both chat and
+stream presence: 8 anchor channels (top-volume, gaming/non-gaming
+variety) plus 42 additional channels stratified by chat-volume decile
+to represent the long tail.
+}
+\details{
+Each channel contributes up to 1,000 messages to the sample. Channels
+with fewer than 1,000 messages during the collection window contribute
+everything they have; this is why the total is below the theoretical
+50,000 ceiling. Encountering channels with very few messages is itself
+part of the population structure students should see.
 }
 \keyword{datasets}

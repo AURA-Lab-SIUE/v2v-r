@@ -1,6 +1,6 @@
 Package: v2v
 Title: Companion Package for 'From Vibes to Variables'
-Version: 0.1.0
+Version: 0.2.0
 Authors@R:
     person("Alex P.", "Leith", , "aleith@siue.edu",
            role = c("aut", "cre"),

@@ -38,10 +38,11 @@ twitch_streams_sample <- read_csv(
 )
 
 stopifnot(
-  nrow(twitch_chat_sample)    == 48000L,
-  nrow(twitch_streams_sample) == 17892L,
-  length(unique(twitch_chat_sample$channel))    == 8L,
-  length(unique(twitch_streams_sample$channel)) == 8L
+  length(unique(twitch_chat_sample$channel))    == 50L,
+  length(unique(twitch_streams_sample$channel)) == 50L,
+  nrow(twitch_chat_sample)    >= 30000L,
+  nrow(twitch_chat_sample)    <= 50000L,
+  nrow(twitch_streams_sample) >= 25000L
 )
 
 usethis::use_data(twitch_chat_sample,    overwrite = TRUE, compress = "xz")

@@ -5,17 +5,18 @@
 \alias{twitch_streams_sample}
 \title{Twitch stream-snapshot sample}
 \format{
-A tibble with 17,892 rows and 6 variables:
+A tibble with ~32,000 rows and 6 variables:
 \describe{
 \item{id}{integer; surrogate primary key.}
 \item{channel}{character; bare channel name (no \verb{#} prefix); matches
 \link{twitch_chat_sample}$channel.}
-\item{title}{character; current stream title at snapshot time. 12
+\item{title}{character; current stream title at snapshot time. Some
 rows have a NULL title in this fixture.}
-\item{game}{character; current Twitch category at snapshot time. 18
+\item{game}{character; current Twitch category at snapshot time. Some
 rows have a NULL game. The category set spans gaming
 (League of Legends, Rocket League, World of Warcraft, Skyrim,
-Fortnite, ...) and non-gaming (Just Chatting, Art).}
+Fortnite, ...) and non-gaming (Just Chatting, Art, Music & Performing
+Arts, Sports & Fitness, Talk Shows & Podcasts).}
 \item{viewers}{integer; concurrent viewer count as reported by Twitch
 at snapshot time. Not de-botted; treat as Twitch's stated count,
 not a ground-truth audience measure.}
@@ -32,7 +33,7 @@ window 2018-11-18 to 2018-11-24.
 twitch_streams_sample
 }
 \description{
-Concurrent stream metadata for the same 8 focal channels and the same
+Concurrent stream metadata for the same 50 channels and the same
 collection window as \link{twitch_chat_sample}. Unlike the chat sample, the
 full focal-channel coverage is shipped without sampling, because the
 underlying snapshot count is small enough to bundle in entirety.

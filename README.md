@@ -9,8 +9,8 @@ Companion R package for the open educational resource [*From Vibes to Variables:
 
 ## What this package ships
 
-- **`twitch_chat_sample`**: 48,000 Twitch IRC chat messages, stratified at 6,000 per channel across 8 focal channels (xqcow, forsen, sodapoppin, asmongold, loltyler1, disguisedtoast, giantwaffle, bobross).
-- **`twitch_streams_sample`**: 17,892 stream snapshots for the same 8 channels and the same collection window.
+- **`twitch_chat_sample`**: ~35,000 Twitch IRC chat messages from 50 channels active in the November 18-24, 2018 collection window. Eight anchor channels (`xqcow`, `forsen`, `sodapoppin`, `asmongold`, `loltyler1`, `disguisedtoast`, `giantwaffle`, `bobross`) are referenced repeatedly throughout the textbook. The other 42 are a stratified random sample by chat-volume decile from the broader population of 1,690 joinable channels, drawn so that Chapter 10's stratified-sampling lesson works against a real sample frame.
+- **`twitch_streams_sample`**: ~32,000 stream snapshots for the same 50 channels and the same collection window.
 - A small set of pedagogical helpers the textbook introduces chapter by chapter.
 
 All source data was collected by the package author from public Twitch IRC and the public Twitch API in November 2018. Three published manuscripts have analyzed adjacent slices of this data infrastructure under an exempt-by-design IRB determination based on the public-channel basis.
