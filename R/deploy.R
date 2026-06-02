@@ -35,7 +35,7 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
 
   ok <- TRUE
 
-  # ── Check 1: renv sync ──────────────────────────────────────────────────────
+  # -- Check 1: renv sync ------------------------------------------------------
   renv_lock <- file.path(path, "renv.lock")
   if (file.exists(renv_lock)) {
     renv_ok <- tryCatch({
@@ -53,10 +53,10 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
       ok <- FALSE
     }
   } else {
-    cli::cli_alert_info("No renv.lock found — skipping renv check")
+    cli::cli_alert_info("No renv.lock found - skipping renv check")
   }
 
-  # ── Check 2: No uncommitted git changes ─────────────────────────────────────
+  # -- Check 2: No uncommitted git changes -------------------------------------
   git_result <- tryCatch(
     system2("git", args = c("-C", shQuote(path), "status", "--porcelain"),
             stdout = TRUE, stderr = FALSE),
@@ -64,7 +64,7 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
   )
 
   if (is.null(git_result)) {
-    cli::cli_alert_warning("git not available — skipping uncommitted-changes check")
+    cli::cli_alert_warning("git not available - skipping uncommitted-changes check")
   } else if (length(git_result) == 0) {
     cli::cli_alert_success("no uncommitted changes")
   } else {
@@ -76,7 +76,7 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
     ok <- FALSE
   }
 
-  # ── Check 3: _quarto.yml exists ─────────────────────────────────────────────
+  # -- Check 3: _quarto.yml exists ---------------------------------------------
   quarto_yml <- file.path(path, "_quarto.yml")
   if (file.exists(quarto_yml)) {
     cli::cli_alert_success("_quarto.yml valid")
@@ -95,7 +95,7 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
 
   cli::cli_rule()
 
-  # ── Render ───────────────────────────────────────────────────────────────────
+  # -- Render -------------------------------------------------------------------
   if (render) {
     n_qmds <- length(list.files(path, pattern = "\\.qmd$", recursive = TRUE))
     cli::cli_progress_step("Rendering {n_qmds} page{?s}")
@@ -110,7 +110,7 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
     cli::cli_progress_done()
   }
 
-  # ── Confirm before publish ───────────────────────────────────────────────────
+  # -- Confirm before publish ---------------------------------------------------
   if (ask) {
     answer <- readline("Publish to GitHub Pages? [y/N] ")
     if (!tolower(trimws(answer)) %in% c("y", "yes")) {
@@ -119,7 +119,7 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
     }
   }
 
-  # ── Publish ──────────────────────────────────────────────────────────────────
+  # -- Publish ------------------------------------------------------------------
   cli::cli_progress_step("Publishing to GitHub Pages")
   pub_result <- tryCatch(
     quarto::quarto_publish_site(input = path, server = "gh-pages", prompt = FALSE),
