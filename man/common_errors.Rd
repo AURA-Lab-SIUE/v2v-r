@@ -71,6 +71,6 @@ without \code{library(v2v)} first.
 
 \strong{Fix:} \code{library(v2v)} and try again. If still failing, reinstall:
 \code{install.packages("v2v")} or
-\code{remotes::install_github("SIM-Lab-SIUE/v2v")}.
+\code{remotes::install_github("aura-lab-siue/v2v-r")}.
 }
 

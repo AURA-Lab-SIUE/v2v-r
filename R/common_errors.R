@@ -58,7 +58,7 @@
 #'
 #' **Fix:** `library(v2v)` and try again. If still failing, reinstall:
 #' `install.packages("v2v")` or
-#' `remotes::install_github("SIM-Lab-SIUE/v2v")`.
+#' `remotes::install_github("aura-lab-siue/v2v-r")`.
 #'
 #' @name common_errors
 NULL

@@ -43,8 +43,8 @@ Media Science} (3rd ed.). SIUE SIM Lab.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/SIM-Lab-SIUE/v2v}
-  \item Report bugs at \url{https://github.com/SIM-Lab-SIUE/v2v/issues}
+  \item \url{https://github.com/aura-lab-siue/v2v-r}
+  \item Report bugs at \url{https://github.com/aura-lab-siue/v2v-r/issues}
 }
 
 }

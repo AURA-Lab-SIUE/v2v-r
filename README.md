@@ -1,7 +1,7 @@
 # v2v
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/SIM-Lab-SIUE/v2v/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/SIM-Lab-SIUE/v2v/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/aura-lab-siue/v2v-r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aura-lab-siue/v2v-r/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
@@ -19,7 +19,7 @@ All source data was collected by the package author from public Twitch IRC and t
 
 ```r
 # install.packages("remotes")
-remotes::install_github("SIM-Lab-SIUE/v2v")
+remotes::install_github("aura-lab-siue/v2v-r")
 ```
 
 ## Quick start
