@@ -1,11 +1,11 @@
 # v2v
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/SIM-Lab-SIUE/v2v/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/SIM-Lab-SIUE/v2v/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/AURA-Lab-SIUE/v2v-r/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/AURA-Lab-SIUE/v2v-r/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-Companion R package for the open educational resource [*From Vibes to Variables: A Field Guide to Open Media Science*](https://sim-lab-siue.github.io/vibes-to-variables/) by Alex P. Leith. Used in SIUE MC-451 (Research Methods) and MC-501 (Graduate).
+Companion R package for the open educational resource [*From Vibes to Variables: A Field Guide to Open Media Science*](https://aura-lab-siue.github.io/v2v/) by Alex P. Leith. Used in SIUE MC-451 (Research Methods) and MC-501 (Graduate).
 
 ## What this package ships
 
@@ -19,7 +19,7 @@ All source data was collected by the package author from public Twitch IRC and t
 
 ```r
 # install.packages("remotes")
-remotes::install_github("SIM-Lab-SIUE/v2v")
+remotes::install_github("AURA-Lab-SIUE/v2v-r")
 ```
 
 ## Quick start
@@ -61,7 +61,7 @@ reliability(coder_a, coder_b, method = "kappa")
 
 ## The data in 90 seconds
 
-The `twitch_chat_sample` and `twitch_streams_sample` tibbles are stratified subsets of a 22-million-row November 2018 dump of public Twitch IRC chat and concurrent stream metadata. The collection window is narrow: 2018-11-18 to 2018-11-24, about 5.85 days. The full data report (provenance, schema, EDA, focal-channel rationale, chapter-keyed worked examples) is at `inst/extdata/v2v-data-report.md` once the package is installed, or in the SIM Lab research tree at `D:/hub/academic/research/sim-lab/v2v/data/report/v2v-data-report.md`.
+The `twitch_chat_sample` and `twitch_streams_sample` tibbles are stratified subsets of a 22-million-row November 2018 dump of public Twitch IRC chat and concurrent stream metadata. The collection window is narrow: 2018-11-18 to 2018-11-24, about 5.85 days. The full data report (provenance, schema, EDA, focal-channel rationale, chapter-keyed worked examples) is at `inst/extdata/v2v-data-report.md` once the package is installed, or in the AURA Lab research tree at `D:/hub/academic/research/sim-lab/v2v/data/report/v2v-data-report.md`.
 
 Two data-quality moments drive Chapter 11:
 
@@ -74,4 +74,4 @@ CC BY 4.0. Free to use, adapt, and redistribute with attribution. See `LICENSE.m
 
 ## Citation
 
-> Leith, A. P. (2026). *From Vibes to Variables: A Field Guide to Open Media Science* (3rd ed.). SIUE SIM Lab. <https://sim-lab-siue.github.io/vibes-to-variables/>
+> Leith, A. P. (2026). *From Vibes to Variables: A Field Guide to Open Media Science* (3rd ed.). SIUE AURA Lab. <https://aura-lab-siue.github.io/v2v/>
