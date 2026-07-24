@@ -52,7 +52,7 @@ v2v_pal <- function() {
       stop(
         "v2v_pal() supports up to ", length(v2v_colours),
         " categories; you asked for ", n,
-        ". Beyond this, colour is no longer an accessible encoding — ",
+        ". Beyond this, colour is no longer an accessible encoding: ",
         "use facets or direct labels instead.",
         call. = FALSE
       )
