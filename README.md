@@ -33,8 +33,8 @@ streams <- twitch_streams()
 
 # Convert the bigint-millisecond timestamps
 library(dplyr)
-chat    <- chat    |> mutate(ts = clean_dates(date))
-streams <- streams |> mutate(ts = clean_dates(date))
+chat    <- chat    %>% mutate(ts = clean_dates(date))
+streams <- streams %>% mutate(ts = clean_dates(date))
 
 # Asof-join each chat message to the nearest prior stream snapshot
 joined <- join_chat_streams(chat, streams)

@@ -33,8 +33,8 @@ sample_messages <- function(chat, n_per_channel = 100, seed = 20261113) {
     cli::cli_abort("{.arg n_per_channel} must be a single positive integer.")
   }
   set.seed(seed)
-  chat |>
-    dplyr::group_by(.data$channel) |>
-    dplyr::slice_sample(n = as.integer(n_per_channel)) |>
+  chat %>%
+    dplyr::group_by(.data$channel) %>%
+    dplyr::slice_sample(n = as.integer(n_per_channel)) %>%
     dplyr::ungroup()
 }
