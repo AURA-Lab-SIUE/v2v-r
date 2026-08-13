@@ -9,3 +9,4 @@
 ^build_pkg\.R$
 ^check_deps\.R$
 ^install_irr\.R$
+^data/v2v-source$

@@ -6,3 +6,8 @@
 *.tar.gz
 docs/
 inst/doc/
+
+# 868 MB of upstream Twitch source and the scripts that derived the shipped
+# sample from it. Kept on disk deliberately; never committed and never built
+# into the package, which students install over the network.
+data/v2v-source/
