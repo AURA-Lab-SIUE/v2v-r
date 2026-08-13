@@ -2,13 +2,13 @@
 % Please edit documentation in R/portfolio.R
 \name{new_portfolio}
 \alias{new_portfolio}
-\title{Scaffold a new V2V student portfolio project}
+\title{Scaffold a new V2V White Paper project}
 \usage{
-new_portfolio(path = "v2v-portfolio", open = FALSE)
+new_portfolio(path = "v2v-whitepaper", open = FALSE)
 }
 \arguments{
 \item{path}{Path at which to create the project. Defaults to
-\code{"v2v-portfolio"} in the current working directory.}
+\code{"v2v-whitepaper"} in the current working directory.}
 
 \item{open}{Logical. If \code{TRUE} (default \code{FALSE} here, override of
 \code{usethis::create_project()} default), open the new project in RStudio.}
@@ -17,21 +17,24 @@ new_portfolio(path = "v2v-portfolio", open = FALSE)
 Invisibly returns the path created.
 }
 \description{
-Creates the canonical V2V portfolio folder structure introduced in
-Chapter 2: weekly journals, a codebook directory, a data tree (with
-\verb{data/raw/} gitignored), a figures directory, a final-report directory,
-a starter \code{index.qmd}, a \verb{_quarto.yml} configured as a Quarto Book, and
-a \code{.gitignore}. Wraps \code{\link[usethis:create_package]{usethis::create_project()}} so the project is also
-an RStudio-recognized project.
+Creates the project structure the White Paper is graded against: the IMRaD
+sections as separate \code{.qmd} files, an abstract, a reflection, a references
+stub, plus the working directories that feed them (weekly journals, the
+codebook, a data tree with \verb{data/raw/} gitignored, and a figures directory).
+Also writes a \verb{_quarto.yml} configured as a Quarto Book. Wraps
+\code{\link[usethis:create_package]{usethis::create_project()}} so the project is also an RStudio-recognized
+project.
 }
 \details{
-This is the function students run once at the start of MC-451 to start
-a new portfolio that will accumulate their journals, prospectus,
-codebook, and final feature article over the semester.
+This is the function students run once, at the start of MC 451 or MC 501, to
+start the project that accumulates their journals, codebook, and White Paper
+over the semester. Every file it creates is referenced by \verb{_quarto.yml}, so
+\code{quarto render} succeeds on a freshly scaffolded project before a single word
+has been written.
 }
 \examples{
 \dontrun{
 library(v2v)
-new_portfolio("~/Documents/mc451-portfolio")
+new_portfolio("~/Documents/mc451-whitepaper")
 }
 }
