@@ -37,11 +37,11 @@ Both inputs must have a \code{ts} column of class POSIXct. Build it with
 library(v2v)
 library(dplyr)
 
-chat <- twitch_chat() |>
+chat <- twitch_chat() \%>\%
   mutate(ts = clean_dates(date))
-streams <- twitch_streams() |>
+streams <- twitch_streams() \%>\%
   mutate(ts = clean_dates(date))
 
 joined <- join_chat_streams(chat, streams)
-joined |> count(game, sort = TRUE) |> head(10)
+joined \%>\% count(game, sort = TRUE) \%>\% head(10)
 }

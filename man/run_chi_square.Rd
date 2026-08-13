@@ -31,8 +31,8 @@ Cramer's V benchmarks (Cohen, 1988): 0.1 = small, 0.3 = medium, 0.5 = large.
 library(v2v)
 library(dplyr)
 
-streams <- twitch_streams() |>
-  filter(!is.na(game)) |>
+streams <- twitch_streams() \%>\%
+  filter(!is.na(game)) \%>\%
   mutate(
     is_gaming   = !(game \%in\% c("Art", "Just Chatting", "Music")),
     viewer_band = cut(viewers, breaks = c(0, 5000, 20000, Inf),

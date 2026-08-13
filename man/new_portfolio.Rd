@@ -22,14 +22,14 @@ sections as separate \code{.qmd} files, an abstract, a reflection, a references
 stub, plus the working directories that feed them (weekly journals, the
 codebook, a data tree with \verb{data/raw/} gitignored, and a figures directory).
 Also writes a \verb{_quarto.yml} configured as a Quarto Book. Wraps
-\code{\link[usethis:create_package]{usethis::create_project()}} so the project is also an RStudio-recognized
+\code{\link[usethis:create_project]{usethis::create_project()}} so the project is also an RStudio-recognized
 project.
 }
 \details{
 This is the function students run once, at the start of MC 451 or MC 501, to
 start the project that accumulates their journals, codebook, and White Paper
 over the semester. Every file it creates is referenced by \verb{_quarto.yml}, so
-\code{quarto render} succeeds on a freshly scaffolded project before a single word
+\verb{quarto render} succeeds on a freshly scaffolded project before a single word
 has been written.
 }
 \examples{

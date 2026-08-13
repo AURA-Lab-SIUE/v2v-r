@@ -26,9 +26,9 @@ correctly in both the HTML and PDF profiles.
 }
 \examples{
 library(dplyr)
-mtcars |>
-  group_by(cyl) |>
-  summarise(mean_mpg = mean(mpg), n = n()) |>
+mtcars \%>\%
+  group_by(cyl) \%>\%
+  summarise(mean_mpg = mean(mpg), n = n()) \%>\%
   pretty_table(caption = "Miles per gallon by cylinder count")
 
 }

@@ -34,19 +34,19 @@ Below 0.2 is described as negligible.
 library(v2v)
 library(dplyr)
 
-chat <- twitch_chat() |>
+chat <- twitch_chat() \%>\%
   mutate(message_length = nchar(message))
 
-channel_type <- twitch_streams() |>
-  filter(!is.na(game)) |>
-  count(channel, game) |>
-  group_by(channel) |>
-  slice_max(n, n = 1, with_ties = FALSE) |>
-  ungroup() |>
-  mutate(is_gaming = !(game \%in\% c("Art", "Just Chatting", "Music"))) |>
+channel_type <- twitch_streams() \%>\%
+  filter(!is.na(game)) \%>\%
+  count(channel, game) \%>\%
+  group_by(channel) \%>\%
+  slice_max(n, n = 1, with_ties = FALSE) \%>\%
+  ungroup() \%>\%
+  mutate(is_gaming = !(game \%in\% c("Art", "Just Chatting", "Music"))) \%>\%
   select(channel, is_gaming)
 
-analysis <- chat |> left_join(channel_type, by = "channel")
+analysis <- chat \%>\% left_join(channel_type, by = "channel")
 
 run_t_test(analysis, value = message_length, group = is_gaming)
 }

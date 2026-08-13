@@ -14,8 +14,8 @@ scale_colour_v2v_c(...)
 scale_color_v2v_c(...)
 }
 \arguments{
-\item{...}{Passed to \code{\link[ggplot2:scale_viridis]{ggplot2::scale_fill_viridis_c()}} /
-\code{\link[ggplot2:scale_viridis]{ggplot2::scale_colour_viridis_c()}}.}
+\item{...}{Passed to \code{\link[ggplot2:scale_fill_viridis_c]{ggplot2::scale_fill_viridis_c()}} /
+\code{\link[ggplot2:scale_colour_viridis_c]{ggplot2::scale_colour_viridis_c()}}.}
 }
 \value{
 A ggplot2 scale, added to a plot with \code{+}.
