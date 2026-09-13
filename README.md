@@ -5,7 +5,7 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-Companion R package for the open educational resource [*From Vibes to Variables: A Field Guide to Open Media Science*](https://aura-lab-siue.github.io/v2v/) by Alex P. Leith. Used in SIUE MC-451 (Research Methods) and MC-501 (Graduate).
+Companion R package for the open educational resource [*From Vibes to Variables: A Field Guide to Open Media Science*](https://aura-lab.siue.edu/v2v/) by Alex P. Leith. Used in SIUE MC-451 (Research Methods) and MC-501 (Graduate).
 
 ## What this package ships
 
@@ -74,4 +74,4 @@ CC BY 4.0. Free to use, adapt, and redistribute with attribution. See `LICENSE.m
 
 ## Citation
 
-> Leith, A. P. (2026). *From Vibes to Variables: A Field Guide to Open Media Science* (3rd ed.). SIUE AURA Lab. <https://aura-lab-siue.github.io/v2v/>
+> Leith, A. P. (2026). *From Vibes to Variables: A Field Guide to Open Media Science* (3rd ed.). SIUE AURA Lab. <https://aura-lab.siue.edu/v2v/>
