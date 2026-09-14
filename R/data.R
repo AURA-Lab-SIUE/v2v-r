@@ -41,8 +41,12 @@
 #'     Convert with [clean_dates()] or
 #'     `as.POSIXct(date / 1000, origin = "1970-01-01", tz = "UTC")`.}
 #' }
-#' @source 1.6 GB pg_dump custom-format archive at
-#'   `D:/hub/archive/grad-school/dissertation/twitch_backup.sql`
+#' @source 1.6 GB (1,717,079,040 byte) tar-format `pg_dump` archive, filename
+#'   `twitch_backup` with no extension, held on the lab's One Touch volume at
+#'   `nonacademic/D_drive/Dissertation/Data/twitch_backup`. The path
+#'   `D:/hub/archive/grad-school/dissertation/twitch_backup.sql` cited in
+#'   earlier versions was a Windows drive letter that no longer resolves, and
+#'   named the wrong extension and archive format.
 #'   (Alex Leith dissertation backup, November 2018). Sampled with
 #'   `set.seed(20261113)`. See `data-raw/manifest.json` (or the V2V data
 #'   report) for the full sampling design, per-channel breakdown, and
