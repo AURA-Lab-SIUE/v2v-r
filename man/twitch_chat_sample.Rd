@@ -35,8 +35,13 @@ Convert with \code{\link[=clean_dates]{clean_dates()}} or
 }
 }
 \source{
-1.6 GB pg_dump custom-format archive at
-\verb{D:/hub/archive/grad-school/dissertation/twitch_backup.sql}
+1.6 GB (1,717,079,040 byte) tar-format \code{pg_dump} archive, filename
+\verb{twitch_backup} with no extension, on the lab's One Touch volume at
+\verb{nonacademic/D_drive/Dissertation/Data/twitch_backup}. The path cited
+in earlier versions,
+\verb{D:/hub/archive/grad-school/dissertation/twitch_backup.sql}, was a
+Windows drive letter that no longer resolves and named the wrong extension
+and archive format.
 (Alex Leith dissertation backup, November 2018). Sampled with
 \code{set.seed(20261113)}. See \code{data-raw/manifest.json} (or the V2V data
 report) for the full sampling design, per-channel breakdown, and
