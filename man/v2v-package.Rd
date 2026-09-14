@@ -37,7 +37,7 @@ full schema and provenance.
 
 Leith, A. P. (2026). \emph{From Vibes to Variables: A Field Guide to Open
 Media Science} (3rd ed.). SIUE SIM Lab.
-\url{https://sim-lab-siue.github.io/vibes-to-variables/}
+\url{https://aura-lab.siue.edu/v2v/}
 }
 
 \seealso{

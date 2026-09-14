@@ -15,17 +15,24 @@ output, not its return value.
 Verifies that the R packages and command-line tools the textbook expects
 are installed and reachable. Run at the end of Chapter 2 to confirm the
 install before any code chapters begin. Prints a checklist of green
-checks for what is present and red x marks for what is missing, along
-with a copy-paste install hint.
+checks for what is present and red x marks for what is missing, followed
+by copy-paste instructions for anything that is not.
 }
 \details{
 Checked items:
 \itemize{
-\item Required CRAN packages: \code{dplyr}, \code{irr}, \code{usethis}, \code{cli}, \code{tibble}, \code{rlang}.
-\item Suggested CRAN packages: \code{quarto} (R wrapper), \code{ggplot2}, \code{lubridate}.
-\item Quarto CLI on PATH (via \code{\link[quarto:quarto_path]{quarto::quarto_path()}}).
-\item Git on PATH (via \code{Sys.which("git")}).
+\item Required packages, the ones installed alongside \code{v2v}: \code{cli}, \code{dplyr},
+\code{ggplot2}, \code{irr}, \code{knitr}, \code{rlang}, \code{tibble}, \code{usethis}.
+\item Suggested package: \code{quarto}, the R wrapper used by \code{\link[=deploy_portfolio]{deploy_portfolio()}}.
+\item Quarto CLI, found on the \code{PATH} or through \code{\link[quarto:quarto_path]{quarto::quarto_path()}}.
+\item Git on \code{PATH} (via \code{Sys.which("git")}).
 }
+
+The Quarto CLI and the \code{quarto} R package are two different things. The
+CLI is the program that renders \code{.qmd} files, downloaded from
+\url{https://quarto.org}; the R package is a thin wrapper that calls it.
+\code{install.packages("quarto")} installs the wrapper and does \strong{not} install
+the CLI, so this check reports them on separate lines.
 }
 \examples{
 \dontrun{

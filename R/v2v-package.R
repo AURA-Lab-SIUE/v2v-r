@@ -24,7 +24,7 @@
 #' @section Citation:
 #' Leith, A. P. (2026). *From Vibes to Variables: A Field Guide to Open
 #' Media Science* (3rd ed.). SIUE SIM Lab.
-#' <https://sim-lab-siue.github.io/vibes-to-variables/>
+#' <https://aura-lab.siue.edu/v2v/>
 #'
 #' @keywords internal
 "_PACKAGE"
