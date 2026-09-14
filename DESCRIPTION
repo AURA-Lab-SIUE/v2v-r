@@ -6,8 +6,8 @@ Authors@R:
            role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7330-2153"))
 Description: Companion R package for the open educational resource
-    'From Vibes to Variables: A Field Guide to Open Media Science' by
-    Alex P. Leith. Ships a stratified subset of a 2018 Twitch chat and
+    'Vibes to Variables: A Methods Package for Students New to Research,
+    Stats, and Code' by Alex P. Leith. Ships a stratified subset of a 2018 Twitch chat and
     stream dataset, scaffolding functions for student portfolios, and
     pedagogical helpers for sampling, intercoder reliability, timestamp
     conversion, and joining the chat and stream tables. Used in SIUE
