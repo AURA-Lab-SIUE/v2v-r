@@ -20,7 +20,12 @@ joins cleanly to \link{twitch_streams_sample}. Recovering the IRC
 representation is a Chapter 11 exercise.}
 \item{sender}{character; pseudonymous Twitch username, public on the
 IRC feed.}
-\item{message}{character; UTF-8 message text, up to 509 characters.
+\item{message}{character; UTF-8 message text, up to 501 characters in
+this sample. Four messages are \code{NA}: they were empty in the source and
+carry no text, so \code{nchar()} returns \code{NA} for them and every \code{na.rm}
+summary drops them. The 509-character maximum quoted in the project
+data report is the maximum of the full source population, not of this
+extract.
 Includes Twitch emote tokens (\code{LULW}, \code{OMEGALUL}, \code{monkaS}, \code{Pog},
 \code{Kappa}, ...) as first-class lexical items; do not strip them
 during normal preprocessing.}

@@ -28,7 +28,12 @@
 #'     representation is a Chapter 11 exercise.}
 #'   \item{sender}{character; pseudonymous Twitch username, public on the
 #'     IRC feed.}
-#'   \item{message}{character; UTF-8 message text, up to 509 characters.
+#'   \item{message}{character; UTF-8 message text, up to 501 characters in
+#'     this sample. Four messages are `NA`: they were empty in the source and
+#'     carry no text, so `nchar()` returns `NA` for them and every `na.rm`
+#'     summary drops them. The 509-character maximum quoted in the project
+#'     data report is the maximum of the full source population, not of this
+#'     extract.
 #'     Includes Twitch emote tokens (`LULW`, `OMEGALUL`, `monkaS`, `Pog`,
 #'     `Kappa`, ...) as first-class lexical items; do not strip them
 #'     during normal preprocessing.}
