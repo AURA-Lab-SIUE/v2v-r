@@ -27,8 +27,8 @@
 #'
 #' # Synthetic example: two coders mostly agree on whether messages contain emotes
 #' msgs <- twitch_chat(channels = "bobross", n = 50)
-#' coder_a <- grepl("LULW|Pog|KEKW", msgs$message)
-#' coder_b <- grepl("LULW|Pog|KEKW|Kappa", msgs$message) # slightly different rule
+#' coder_a <- grepl("LULW|Pog|OMEGALUL", msgs$message)
+#' coder_b <- grepl("LULW|Pog|OMEGALUL|Kappa", msgs$message) # slightly different rule
 #'
 #' reliability(coder_a, coder_b, method = "kappa")
 #' @export

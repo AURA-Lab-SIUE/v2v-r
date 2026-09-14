@@ -29,7 +29,7 @@
 #'   \item{sender}{character; pseudonymous Twitch username, public on the
 #'     IRC feed.}
 #'   \item{message}{character; UTF-8 message text, up to 509 characters.
-#'     Includes Twitch emote tokens (`LULW`, `OMEGALUL`, `KEKW`, `Pog`,
+#'     Includes Twitch emote tokens (`LULW`, `OMEGALUL`, `monkaS`, `Pog`,
 #'     `Kappa`, ...) as first-class lexical items; do not strip them
 #'     during normal preprocessing.}
 #'   \item{date}{numeric; Unix epoch in **milliseconds** (not seconds).

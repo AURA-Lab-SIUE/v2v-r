@@ -21,7 +21,7 @@ representation is a Chapter 11 exercise.}
 \item{sender}{character; pseudonymous Twitch username, public on the
 IRC feed.}
 \item{message}{character; UTF-8 message text, up to 509 characters.
-Includes Twitch emote tokens (\code{LULW}, \code{OMEGALUL}, \code{KEKW}, \code{Pog},
+Includes Twitch emote tokens (\code{LULW}, \code{OMEGALUL}, \code{monkaS}, \code{Pog},
 \code{Kappa}, ...) as first-class lexical items; do not strip them
 during normal preprocessing.}
 \item{date}{numeric; Unix epoch in \strong{milliseconds} (not seconds).
