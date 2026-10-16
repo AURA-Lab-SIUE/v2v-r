@@ -1,3 +1,13 @@
+# v2v 0.3.2
+
+`new_portfolio()` no longer overwrites a project in use. Run a second time on the
+same folder, it used to replace the codebook and every White Paper section with
+blank stubs, without a warning. It now stops and says the project already exists.
+
+`new_portfolio()` also works from inside the course workspace. The workspace is a
+git repository, so the scaffold used to stop and ask whether to create a project
+inside another one. That nesting is the intended layout, so it no longer asks.
+
 # v2v 0.3.0
 
 `new_portfolio()` now scaffolds the white paper the Fall 2026 syllabi actually

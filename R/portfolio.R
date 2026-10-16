@@ -26,6 +26,23 @@
 #' }
 #' @export
 new_portfolio <- function(path = "v2v-whitepaper", open = FALSE) {
+  # Every stub below is written with writeLines(), which overwrites. Running this
+  # a second time on a project in use replaced a student's filled-in codebook and
+  # IMRaD sections with blank stubs, silently. Refuse instead.
+  if (dir.exists(path) && length(list.files(path, all.files = TRUE, no.. = TRUE)) > 0) {
+    cli::cli_abort(c(
+      "{.path {path}} already exists and is not empty.",
+      "i" = "Your project is already made. Open it rather than building it again.",
+      "i" = "To start a fresh one, pick a new name."
+    ))
+  }
+
+  # Students run this inside the v2v-workspace template, which is itself a git
+  # repository, so usethis stops at a shuffled "create anyway?" menu. Nesting the
+  # White Paper inside the workspace is the intended layout.
+  op <- options(usethis.allow_nested_project = TRUE)
+  on.exit(options(op), add = TRUE)
+
   usethis::create_project(path = path, open = open)
 
   subdirs <- c("journals", "codebook", "data/raw", "data/derived", "figures")
