@@ -1,3 +1,10 @@
+# v2v 0.3.4
+
+* Corrected a stale GitHub path in the 0.3.0 release note: the reinstall command
+  cited `aura-lab/v2v-r`, which does not resolve. Every install line in the package
+  now names the canonical `AURA-Lab-SIUE/v2v-r`. The `?v2v::common_errors` reinstall
+  advice already names it; this fixes the one remaining wrong reference.
+
 # v2v 0.3.3
 
 Released for the AURA Lab R Companion (labor #rgui, 2026-10-19).
@@ -64,7 +71,7 @@ it rather than renaming files in place.
 
 Reinstall with:
 
-    remotes::install_github("aura-lab/v2v-r")
+    remotes::install_github("AURA-Lab-SIUE/v2v-r")
 
 # v2v 0.2.0
 
