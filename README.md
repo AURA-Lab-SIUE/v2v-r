@@ -7,6 +7,18 @@
 
 Companion R package for the open educational resource [*Vibes to Variables: A Methods Package for Students New to Research, Stats, and Code*](https://aura-lab.siue.edu/v2v/) by Alex P. Leith. Used in SIUE MC-451 (Research Methods) and MC-501 (Graduate).
 
+## Part of From Vibes to Variables
+
+[From Vibes to Variables (V2V)](https://aura-lab.siue.edu/v2v/) is the AURA Lab's open methods package for teaching media research at Southern Illinois University Edwardsville. Its parts are built to be used together:
+
+- [Textbook](https://aura-lab.siue.edu/v2v/) ([source](https://github.com/AURA-Lab-SIUE/v2v)): the open textbook that carries the arc from research question to published report.
+- [Course hub](https://aura-lab.siue.edu/v2v-hub/) ([source](https://github.com/AURA-Lab-SIUE/v2v-hub)): the course website for MC 451 and MC 501 that sequences the textbook, the labs, and the setup guides.
+- [v2v R package](https://github.com/AURA-Lab-SIUE/v2v-r) (this repository): the companion package with the Twitch practice corpus and the helpers the textbook introduces chapter by chapter.
+- [Course workspace](https://github.com/AURA-Lab-SIUE/v2v-workspace): the VS Code template students copy for journals, reading notes, and project work.
+- [R Companion](https://github.com/AURA-Lab-SIUE/r-companion): the VS Code extension that checks each student's R setup, installs what is missing, and explains common R errors.
+
+A sibling template, [mc427-codespace](https://github.com/AURA-Lab-SIUE/mc427-codespace), gives MC 427 Social Media Analytics the same VS Code and R toolchain in a GitHub Codespace; the R Companion serves MC 427 as well, and the v2v package is not used there.
+
 ## What this package ships
 
 - **`twitch_chat_sample`**: ~35,000 Twitch IRC chat messages from 50 channels active in the November 18-24, 2018 collection window. Eight anchor channels (`xqcow`, `forsen`, `sodapoppin`, `asmongold`, `loltyler1`, `disguisedtoast`, `giantwaffle`, `bobross`) are referenced repeatedly throughout the textbook. The other 42 are a stratified random sample by chat-volume decile from the broader population of 1,690 joinable channels, drawn so that Chapter 10's stratified-sampling lesson works against a real sample frame.
@@ -61,12 +73,21 @@ reliability(coder_a, coder_b, method = "kappa")
 
 ## The data in 90 seconds
 
-The `twitch_chat_sample` and `twitch_streams_sample` tibbles are stratified subsets of a 22-million-row November 2018 dump of public Twitch IRC chat and concurrent stream metadata. The collection window is narrow: 2018-11-18 to 2018-11-24, about 5.85 days. The full data report (provenance, schema, EDA, focal-channel rationale, chapter-keyed worked examples) is at `inst/extdata/v2v-data-report.md` once the package is installed, or in the AURA Lab research tree at `D:/hub/academic/research/sim-lab/v2v/data/report/v2v-data-report.md`.
+The `twitch_chat_sample` and `twitch_streams_sample` tibbles are stratified subsets of a 22-million-row November 2018 dump of public Twitch IRC chat and concurrent stream metadata. The collection window is narrow: 2018-11-18 to 2018-11-24, about 5.85 days.
 
 Two data-quality moments drive Chapter 11:
 
 1. **`chat_log.channel` is prefixed with `#`** (IRC convention); `stream_log.channel` is not. In the shipped fixture the prefix has been stripped so joins work; recovering the IRC representation is an exercise.
 2. **`date` is bigint Unix epoch in milliseconds**, not seconds. Without dividing by 1000, students get timestamps in the year 50,888. `clean_dates()` does the divide so the failure mode cannot happen by accident.
+
+## Adapting this for your course
+
+The package is a teaching instrument, and the parts another course would change are deliberately few:
+
+- **Swap the datasets.** The two shipped tibbles live in `data/` (`twitch_chat_sample.rda` and `twitch_streams_sample.rda`), with their build scripts in `data-raw/`. They are loaded through the functions in `R/loaders.R` (`twitch_chat()` and `twitch_streams()`), which filter by channel and draw random subsamples. Replace the `.rda` files with your own corpus and keep the loader signatures, and the sampling and wrangling exercises keep working.
+- **Edit the setup checklist.** `R/setup.R` holds two character vectors, `required_pkgs` and `suggested_pkgs`, that `setup()` checks, alongside its Quarto CLI and Git checks. Change the lists to your course's toolchain; the printed checklist and the copy-paste install instructions follow from them.
+- **Keep wrappers inspectable.** Helpers such as `clean_dates()` (`R/dates.R`) and `join_chat_streams()` (`R/join.R`) are thin wrappers over the plain calls they replace, kept short so `body(clean_dates)` shows students the real arithmetic. A helper you add should be a stepping stone to the plain call, not a replacement for learning it.
+- **Rename for your course** in `DESCRIPTION` (package name, title, and version), update the `library()` calls in your course materials, and rebuild with `R CMD check` or `devtools::check()`.
 
 ## License
 
