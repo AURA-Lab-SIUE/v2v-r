@@ -40,10 +40,15 @@ source dump, normalize first:
 \strong{Symptom:} \code{v2v::setup()} shows a red x on Quarto CLI even though you
 can run Quarto from the terminal.
 
-\strong{Cause:} The R \code{quarto} package is not installed. R looks up the CLI
-through that wrapper.
+\strong{Cause:} R was already open when Quarto was installed. R reads the
+\code{PATH} once, when it starts, so a session opened before the install
+cannot see Quarto. (Before v2v 0.3.1, \code{setup()} also misreported the CLI
+as missing whenever the \code{quarto} R package was absent; that is fixed.)
 
-\strong{Fix:} \code{install.packages("quarto")} and run \code{setup()} again.
+\strong{Fix:} Quit R, open it again, and run \code{setup()} once more. If the red x
+stays, reinstall Quarto from \url{https://quarto.org/docs/get-started/}. The
+\code{quarto} R package is a separate, optional wrapper: installing it does not
+install the CLI.
 }
 
 \section{Cohen's kappa is much lower than I expected}{
@@ -69,8 +74,8 @@ defined and shows up more often, or (2) report Krippendorff's alpha
 \strong{Cause:} The package is not installed, or you are calling \code{data()}
 without \code{library(v2v)} first.
 
-\strong{Fix:} \code{library(v2v)} and try again. If still failing, reinstall:
-\code{install.packages("v2v")} or
-\code{remotes::install_github("SIM-Lab-SIUE/v2v")}.
+\strong{Fix:} \code{library(v2v)} and try again. If still failing, reinstall from
+GitHub (v2v is not on CRAN, so \code{install.packages("v2v")} cannot find it):
+\code{remotes::install_github("AURA-Lab-SIUE/v2v-r", upgrade = "never", force = TRUE)}.
 }
 

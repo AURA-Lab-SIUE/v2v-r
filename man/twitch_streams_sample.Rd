@@ -38,4 +38,10 @@ collection window as \link{twitch_chat_sample}. Unlike the chat sample, the
 full focal-channel coverage is shipped without sampling, because the
 underlying snapshot count is small enough to bundle in entirety.
 }
+\section{License}{
+
+CC BY 4.0 (see \code{LICENSE-DATA.md}). The underlying messages are public
+Twitch content and remain subject to Twitch's terms.
+}
+
 \keyword{datasets}

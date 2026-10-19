@@ -23,3 +23,9 @@ test_that("clean_dates() respects tz argument", {
 test_that("clean_dates() rejects non-numeric input", {
   expect_error(clean_dates("1542578125327"), "numeric")
 })
+
+test_that("clean_dates() equals the lubridate call it names", {
+  skip_if_not_installed("lubridate")
+  x <- c(1542578125327, 1543083667610)
+  expect_equal(suppressMessages(clean_dates(x)), lubridate::as_datetime(x / 1000, tz = "UTC"))
+})

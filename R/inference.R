@@ -74,28 +74,40 @@ run_t_test <- function(data, value, group) {
     .default      = "large"
   )
 
+  # APA 7: the exact p to three decimals, no leading zero, and "< .001" below
+  # that. The old "< .01" band hid values the write-up must report exactly.
   p_fmt <- if (raw$p.value < .001) "< .001" else
-    if (raw$p.value < .01) "< .01" else
-      formatC(raw$p.value, digits = 3, format = "f")
+    paste("=", sub("^0", "", formatC(raw$p.value, digits = 3, format = "f")))
 
   sig_word <- if (raw$p.value < .05) "statistically significant" else
     "not statistically significant"
 
+  # cli_verbatim, not cli_text: cli_text wraps and collapses runs of spaces, which
+  # removed the column alignment below. The rows name the levels, so the group a
+  # value belongs to never depends on which level R sorts first.
+  data_name <- data_label(substitute(data))
+  rows <- c(
+    sprintf("%-22s n = %d, mean = %s, SD = %s", levels[1], n_a, num(mean(a_vals)), num(s_a)),
+    sprintf("%-22s n = %d, mean = %s, SD = %s", levels[2], n_b, num(mean(b_vals)), num(s_b)),
+    sprintf("%-22s %s", "Difference", num(mean(a_vals) - mean(b_vals)))
+  )
   cli::cli_text("{.strong Welch two-sample t-test}")
   cli::cli_text("{val_name} by {grp_name}")
-  cli::cli_text("")
-  cli::cli_text("  Mean ({levels[1]})      {round(mean(a_vals), 2)}")
-  cli::cli_text("  Mean ({levels[2]})      {round(mean(b_vals), 2)}")
-  cli::cli_text("  Difference         {round(mean(a_vals) - mean(b_vals), 2)}")
-  cli::cli_text("")
-  cli::cli_text("  t                  {round(unname(raw$statistic), 2)}")
-  cli::cli_text("  df                 {round(unname(raw$parameter), 1)}")
-  cli::cli_text("  p-value            {p_fmt}")
-  cli::cli_text("  Cohen's d          {round(d, 2)}  ({interp})")
-  cli::cli_text("")
-  cli::cli_text(
-    "  {levels[1]} and {levels[2]} differ by a {sig_word}, {interp} amount."
-  )
+  cli::cli_verbatim(c(
+    "",
+    paste0("  ", rows),
+    "",
+    sprintf("  %-22s %s", "t", num(unname(raw$statistic))),
+    sprintf("  %-22s %s", "df", formatC(unname(raw$parameter), digits = 1, format = "f")),
+    sprintf("  %-22s %s", "p-value", p_fmt),
+    sprintf("  %-22s %s  (%s)", "Cohen's d", num(d), interp),
+    "",
+    sprintf("  %s and %s differ by a %s, %s amount.", levels[1], levels[2], sig_word, interp),
+    "",
+    "  The same test without v2v:",
+    sprintf("    t.test(%s ~ %s, data = %s)", val_name, grp_name, data_name),
+    sprintf("    effectsize::cohens_d(%s ~ %s, data = %s)", val_name, grp_name, data_name)
+  ))
 
   invisible(list(
     t              = unname(raw$statistic),
@@ -103,10 +115,25 @@ run_t_test <- function(data, value, group) {
     p_value        = raw$p.value,
     mean_a         = mean(a_vals),
     mean_b         = mean(b_vals),
+    n_a            = n_a,
+    n_b            = n_b,
+    sd_a           = s_a,
+    sd_b           = s_b,
+    levels         = as.character(levels),
     cohens_d       = d,
     interpretation = interp,
     raw            = raw
   ))
+}
+
+# Two decimals, always shown, for the numbers a student copies into a sentence.
+num <- function(x) formatC(x, digits = 2, format = "f")
+
+# The name of the data argument as the student typed it, for the printed
+# equivalent call. Inside a pipe R sees only ".", which names nothing.
+data_label <- function(expr) {
+  label <- paste(deparse(expr), collapse = "")
+  if (identical(label, ".")) "your_data" else label
 }
 
 
@@ -166,31 +193,47 @@ run_chi_square <- function(data, x, y) {
     .default  = "large"
   )
 
+  # APA 7: the exact p to three decimals, no leading zero, and "< .001" below
+  # that. The old "< .01" band hid values the write-up must report exactly.
   p_fmt <- if (raw$p.value < .001) "< .001" else
-    if (raw$p.value < .01) "< .01" else
-      formatC(raw$p.value, digits = 3, format = "f")
+    paste("=", sub("^0", "", formatC(raw$p.value, digits = 3, format = "f")))
 
   sig_word <- if (raw$p.value < .05) "statistically significant" else
     "not statistically significant"
 
+  # The assumption check the course teaches by hand: an expected count below 5
+  # makes the chi-square approximation unreliable (chisq.test() then warns).
+  min_expected <- min(raw$expected)
+  data_name <- data_label(substitute(data))
+
   cli::cli_text("{.strong Chi-square test of independence}")
   cli::cli_text("{x_name} by {y_name}")
-  cli::cli_text("")
-  cli::cli_text("  N                  {n}")
-  cli::cli_text("  Chi-squared        {round(unname(raw$statistic), 2)}")
-  cli::cli_text("  df                 {unname(raw$parameter)}")
-  cli::cli_text("  p-value            {p_fmt}")
-  cli::cli_text("  Cramer's V         {round(v, 2)}  ({interp})")
-  cli::cli_text("")
-  cli::cli_text(
-    "  The association between {x_name} and {y_name} is {sig_word} and {interp} in size."
-  )
+  cli::cli_verbatim(c(
+    "",
+    sprintf("  %-22s %d", "N", n),
+    sprintf("  %-22s %s", "Chi-squared", num(unname(raw$statistic))),
+    sprintf("  %-22s %s", "df", unname(raw$parameter)),
+    sprintf("  %-22s %s", "p-value", p_fmt),
+    sprintf("  %-22s %s  (%s)", "Cramer's V", num(v), interp),
+    sprintf("  %-22s %s%s", "Smallest expected count", num(min_expected),
+            if (min_expected < 5) "  (below 5: the test is unreliable)" else ""),
+    "",
+    sprintf("  The association between %s and %s is %s and %s in size.",
+            x_name, y_name, sig_word, interp),
+    "",
+    "  The same test without v2v:",
+    sprintf("    chisq.test(xtabs(~ %s + %s, data = %s))", x_name, y_name, data_name),
+    sprintf("    effectsize::cramers_v(xtabs(~ %s + %s, data = %s), adjust = FALSE)",
+            x_name, y_name, data_name)
+  ))
 
   invisible(list(
     chi_sq         = unname(raw$statistic),
     df             = unname(raw$parameter),
     p_value        = raw$p.value,
+    n              = n,
     cramers_v      = v,
+    min_expected   = min_expected,
     interpretation = interp,
     raw            = raw
   ))

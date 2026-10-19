@@ -16,10 +16,18 @@
 #' @param streams A tibble with at least `channel`, `ts`, `game`, and
 #'   `viewers` columns. An `is_gaming` column is included in the result if
 #'   present in `streams`.
-#' @return A tibble with the same rows as `chat`, plus the matched stream
-#'   columns (`game`, `viewers`, and optionally `is_gaming`). Chat rows
-#'   with no prior stream snapshot for their channel will have NA in the
-#'   stream columns; on the focal corpus this is 0.06% of rows.
+#' The first call in a session also prints the plain dplyr join this
+#' function stands for, `left_join(chat, streams, by = join_by(channel,
+#' closest(ts >= snapshot_ts)))`, with the snapshot's `ts` renamed to
+#' `snapshot_ts` first. Set `options(v2v.show_equivalent = FALSE)` to turn
+#' that message off.
+#'
+#' @return A tibble with the same rows as `chat` (sorted by channel and
+#'   time), its own columns unchanged, including `ts`, plus the matched stream
+#'   columns: `snapshot_ts` (the time of the snapshot that matched), `game`,
+#'   `viewers`, and optionally `is_gaming`. Chat rows with no prior stream
+#'   snapshot for their channel will have NA in the stream columns; on the
+#'   focal corpus this is 11 of 35,267 rows (0.03%).
 #' @examples
 #' library(v2v)
 #' library(dplyr)
@@ -53,10 +61,34 @@ join_chat_streams <- function(chat, streams) {
   cols <- c("channel", "ts", "game", "viewers")
   if ("is_gaming" %in% names(streams)) cols <- c(cols, "is_gaming")
 
+  # The snapshot time is renamed BEFORE the join. Joining ts to ts made dplyr
+  # suffix both, so the chat's own ts came back as ts.x and the next line a
+  # student wrote, hour(ts), silently found stats::ts() instead and failed with
+  # "do not know how to convert 'x' to class POSIXlt".
+  snapshots <- dplyr::rename(dplyr::select(streams, dplyr::all_of(cols)),
+                             snapshot_ts = "ts")
+
+  show_equivalent(
+    "join_chat_streams",
+    "left_join(chat, streams, by = join_by(channel, closest(ts >= snapshot_ts)))"
+  )
+
   dplyr::left_join(
     dplyr::arrange(chat, .data$channel, .data$ts),
-    dplyr::arrange(dplyr::select(streams, dplyr::all_of(cols)),
-                   .data$channel, .data$ts),
-    by = dplyr::join_by(channel, closest(ts >= ts))
+    dplyr::arrange(snapshots, .data$channel, .data$snapshot_ts),
+    by = dplyr::join_by(channel, closest(ts >= snapshot_ts))
+  )
+}
+
+# Name the plain call a helper stands for, once per session, so the helper is a
+# step toward dplyr and lubridate rather than a replacement for them. A message,
+# not a print: suppressMessages() and options(v2v.show_equivalent = FALSE) both
+# silence it, which matters inside rendered documents.
+show_equivalent <- function(helper, call) {
+  if (!isTRUE(getOption("v2v.show_equivalent", TRUE))) return(invisible())
+  rlang::inform(
+    paste0(helper, "() is the same as: ", call),
+    .frequency = "once",
+    .frequency_id = paste0("v2v_equivalent_", helper)
   )
 }

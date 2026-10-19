@@ -31,10 +31,15 @@
 #' **Symptom:** `v2v::setup()` shows a red x on Quarto CLI even though you
 #' can run Quarto from the terminal.
 #'
-#' **Cause:** The R `quarto` package is not installed. R looks up the CLI
-#' through that wrapper.
+#' **Cause:** R was already open when Quarto was installed. R reads the
+#' `PATH` once, when it starts, so a session opened before the install
+#' cannot see Quarto. (Before v2v 0.3.1, `setup()` also misreported the CLI
+#' as missing whenever the `quarto` R package was absent; that is fixed.)
 #'
-#' **Fix:** `install.packages("quarto")` and run `setup()` again.
+#' **Fix:** Quit R, open it again, and run `setup()` once more. If the red x
+#' stays, reinstall Quarto from <https://quarto.org/docs/get-started/>. The
+#' `quarto` R package is a separate, optional wrapper: installing it does not
+#' install the CLI.
 #'
 #' @section Cohen's kappa is much lower than I expected:
 #' **Symptom:** Two coders who seem to agree most of the time still
@@ -56,9 +61,9 @@
 #' **Cause:** The package is not installed, or you are calling `data()`
 #' without `library(v2v)` first.
 #'
-#' **Fix:** `library(v2v)` and try again. If still failing, reinstall:
-#' `install.packages("v2v")` or
-#' `remotes::install_github("SIM-Lab-SIUE/v2v")`.
+#' **Fix:** `library(v2v)` and try again. If still failing, reinstall from
+#' GitHub (v2v is not on CRAN, so `install.packages("v2v")` cannot find it):
+#' `remotes::install_github("AURA-Lab-SIUE/v2v-r", upgrade = "never", force = TRUE)`.
 #'
 #' @name common_errors
 NULL

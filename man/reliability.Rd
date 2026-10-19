@@ -16,10 +16,11 @@ levels as \code{coder_a}.}
 (Krippendorff's, for any level of measurement).}
 }
 \value{
-A list with elements \code{statistic} (the numeric value),
-\code{method} (the method name), \code{interpretation} (Landis & Koch label),
-and \code{raw} (the full underlying object from \code{irr} for further
-inspection).
+A list of class \code{v2v_reliability} with elements \code{statistic} (the
+numeric value), \code{method} (the method name), \code{interpretation} (Landis &
+Koch label), \code{n} (items coded by both), \code{agreement} (the share of those
+items with the same code), and \code{raw} (the full underlying object from
+\code{irr} for further inspection).
 }
 \description{
 Wraps \code{\link[irr:kappa2]{irr::kappa2()}} (Cohen's kappa, for two coders and nominal codes)
@@ -35,6 +36,11 @@ Landis & Koch benchmarks: \verb{< 0.20} = slight, \code{0.21-0.40} = fair,
 almost perfect. The V2V graduate threshold is \verb{>= 0.70}; values below
 that mean the codebook needs revision, not that the coders need to
 work harder.
+
+The result prints as a short report: the number of items, the share on
+which the two coders agreed, the statistic and its label, and the \code{irr}
+call that computes the same number, which is the call to use once the
+course is over.
 }
 \examples{
 library(v2v)

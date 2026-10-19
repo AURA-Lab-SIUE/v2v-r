@@ -25,7 +25,10 @@ step alongside the conversion so the failure mode cannot happen by accident.
 }
 \details{
 This is the headline conversion lesson of Chapter 11. The function exists
-to be teachable, not to hide the arithmetic: see \code{body(clean_dates)}.
+to be teachable, not to hide the arithmetic: see \code{body(clean_dates)}. The
+first call in a session also prints the tidyverse call that does the same
+thing, \code{lubridate::as_datetime(x / 1000, tz = "UTC")}; set
+\code{options(v2v.show_equivalent = FALSE)} to turn that message off.
 }
 \examples{
 library(v2v)

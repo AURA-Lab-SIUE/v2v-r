@@ -7,7 +7,10 @@
 #' step alongside the conversion so the failure mode cannot happen by accident.
 #'
 #' This is the headline conversion lesson of Chapter 11. The function exists
-#' to be teachable, not to hide the arithmetic: see `body(clean_dates)`.
+#' to be teachable, not to hide the arithmetic: see `body(clean_dates)`. The
+#' first call in a session also prints the tidyverse call that does the same
+#' thing, `lubridate::as_datetime(x / 1000, tz = "UTC")`; set
+#' `options(v2v.show_equivalent = FALSE)` to turn that message off.
 #'
 #' @param x Numeric vector of Unix-epoch values in milliseconds.
 #' @param tz Time zone for the returned POSIXct. Defaults to `"UTC"` because
@@ -28,5 +31,6 @@ clean_dates <- function(x, tz = "UTC") {
   if (!is.numeric(x)) {
     cli::cli_abort("{.arg x} must be a numeric vector of Unix epoch ms.")
   }
+  show_equivalent("clean_dates", "lubridate::as_datetime(date / 1000, tz = \"UTC\")")
   as.POSIXct(x / 1000, origin = "1970-01-01", tz = tz)
 }

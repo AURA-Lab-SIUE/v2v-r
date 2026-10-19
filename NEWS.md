@@ -1,3 +1,33 @@
+# v2v 0.3.3
+
+Released for the AURA Lab R Companion (labor #rgui, 2026-10-19).
+
+* `setup()` now checks R 4.1 or later, the `tidyverse`, `rmarkdown`, and `remotes`,
+  and `dplyr` 1.1.0 or later, so it can no longer report "Everything the course
+  needs is installed" on a machine without the tidyverse. `setup(course = "mc451")`
+  and `setup(course = "mc501")` add each course's packages. The result carries a
+  `"checks"` table, and `setup(quiet = TRUE)` returns it without printing, so a tool
+  can read the result instead of parsing the checklist.
+* `reliability()` prints a short report (items, observed agreement, the statistic,
+  its label, and the `irr` call that computes the same number) instead of a raw
+  list, and returns `n` and `agreement` as well. Krippendorff's alpha no longer
+  warns "NAs introduced by coercion" on text codes; the value is unchanged.
+* `run_t_test()` prints each group's n, mean, and SD, and `run_chi_square()` prints
+  the smallest expected count, both with their columns aligned again. Both print
+  the plain R call that runs the same test, and report an exact p-value
+  (`= .040`, `< .001`) where they used to print `< .01`. The returned lists gain
+  `n_a`, `n_b`, `sd_a`, `sd_b`, `levels`, `n`, and `min_expected`; no element
+  was removed or renamed.
+* `join_chat_streams()` keeps the chat's `ts` column as `ts` and adds the matched
+  snapshot's time as `snapshot_ts`. In 0.3.2 the two came back as `ts.x` and `ts.y`,
+  so code after the join that used `ts` found `stats::ts()` and failed.
+* `join_chat_streams()` and `clean_dates()` name the plain dplyr or lubridate call they
+  stand for, once per session (`options(v2v.show_equivalent = FALSE)` turns it off).
+* `?common_errors`: the Quarto section no longer repeats the diagnosis that 0.3.1
+  fixed, and the reinstall advice names the working command.
+* DESCRIPTION: the author ORCID is corrected to 0000-0003-1310-6763 (the old one
+  failed R's checksum and warned on every install).
+
 # v2v 0.3.2
 
 The package code is now licensed under MIT (`LICENSE.md`); the two bundled Twitch

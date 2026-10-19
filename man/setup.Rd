@@ -4,15 +4,25 @@
 \alias{setup}
 \title{Validate the V2V student toolchain}
 \usage{
-setup()
+setup(course = NULL, quiet = FALSE)
+}
+\arguments{
+\item{course}{\code{NULL} (the default) for the packages every V2V course
+needs, or \code{"mc451"} or \code{"mc501"} to add that course's packages.}
+
+\item{quiet}{If \code{TRUE}, print nothing and only return the result. Tools
+such as the AURA Lab R Companion use this to read the checks.}
 }
 \value{
 Invisibly returns a logical: \code{TRUE} if everything required is
-present, \code{FALSE} otherwise. The function is run for its side-effect
-output, not its return value.
+present, \code{FALSE} otherwise. It carries an attribute, \code{"checks"}, a
+tibble with one row per item checked and the columns \code{item}, \code{kind}
+(\code{"r"}, \code{"required"}, \code{"course"}, \code{"suggested"}, or \code{"tool"}), \code{ok},
+\code{version}, \code{minimum}, and \code{detail}, so a tool can read the result
+without parsing the printed checklist.
 }
 \description{
-Verifies that the R packages and command-line tools the textbook expects
+Verifies that the R packages and command-line tools the course expects
 are installed and reachable. Run at the end of Chapter 2 to confirm the
 install before any code chapters begin. Prints a checklist of green
 checks for what is present and red x marks for what is missing, followed
@@ -21,8 +31,15 @@ by copy-paste instructions for anything that is not.
 \details{
 Checked items:
 \itemize{
-\item Required packages, the ones installed alongside \code{v2v}: \code{cli}, \code{dplyr},
-\code{ggplot2}, \code{irr}, \code{knitr}, \code{rlang}, \code{tibble}, \code{usethis}.
+\item R itself, at version 4.1 or later.
+\item Required packages: the ones installed alongside \code{v2v} (\code{cli}, \code{dplyr},
+\code{ggplot2}, \code{irr}, \code{knitr}, \code{rlang}, \code{tibble}, \code{usethis}), plus the
+course packages every script loads or every render needs: \code{tidyverse},
+\code{rmarkdown} (Quarto renders R chunks through it), and \code{remotes} (it
+reinstalls \code{v2v}). \code{dplyr} must be 1.1.0 or later, because
+\code{\link[=join_chat_streams]{join_chat_streams()}} uses \code{join_by()}.
+\item Course packages for the course named in \code{course}: \code{janitor} for both
+courses, and for MC 501 also \code{effectsize}, \code{lm.beta}, \code{pwr}, and \code{renv}.
 \item Suggested package: \code{quarto}, the R wrapper used by \code{\link[=deploy_portfolio]{deploy_portfolio()}}.
 \item Quarto CLI, found on the \code{PATH} or through \code{\link[quarto:quarto_path]{quarto::quarto_path()}}.
 \item Git on \code{PATH} (via \code{Sys.which("git")}).
@@ -38,5 +55,9 @@ the CLI, so this check reports them on separate lines.
 \dontrun{
 library(v2v)
 setup()
+setup(course = "mc501")
+
+# The checks as a table
+attr(setup(quiet = TRUE), "checks")
 }
 }

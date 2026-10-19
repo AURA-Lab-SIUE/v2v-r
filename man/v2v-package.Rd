@@ -49,11 +49,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Alex P. Leith \email{aleith@siue.edu} (\href{https://orcid.org/0000-0001-7330-2153}{ORCID})
+\strong{Maintainer}: Alex P. Leith \email{aleith@siue.edu} (\href{https://orcid.org/0000-0003-1310-6763}{ORCID})
 
 Authors:
 \itemize{
-  \item Alex P. Leith \email{aleith@siue.edu} (\href{https://orcid.org/0000-0001-7330-2153}{ORCID})
+  \item Alex P. Leith \email{aleith@siue.edu} (\href{https://orcid.org/0000-0003-1310-6763}{ORCID})
 }
 
 }

@@ -13,13 +13,19 @@ output of \code{\link[=twitch_chat]{twitch_chat()}} with \code{ts <- clean_dates
 
 \item{streams}{A tibble with at least \code{channel}, \code{ts}, \code{game}, and
 \code{viewers} columns. An \code{is_gaming} column is included in the result if
-present in \code{streams}.}
+present in \code{streams}.
+The first call in a session also prints the plain dplyr join this
+function stands for, \code{left_join(chat, streams, by = join_by(channel, closest(ts >= snapshot_ts)))}, with the snapshot's \code{ts} renamed to
+\code{snapshot_ts} first. Set \code{options(v2v.show_equivalent = FALSE)} to turn
+that message off.}
 }
 \value{
-A tibble with the same rows as \code{chat}, plus the matched stream
-columns (\code{game}, \code{viewers}, and optionally \code{is_gaming}). Chat rows
-with no prior stream snapshot for their channel will have NA in the
-stream columns; on the focal corpus this is 0.06\% of rows.
+A tibble with the same rows as \code{chat} (sorted by channel and
+time), its own columns unchanged, including \code{ts}, plus the matched stream
+columns: \code{snapshot_ts} (the time of the snapshot that matched), \code{game},
+\code{viewers}, and optionally \code{is_gaming}. Chat rows with no prior stream
+snapshot for their channel will have NA in the stream columns; on the
+focal corpus this is 11 of 35,267 rows (0.03\%).
 }
 \description{
 For each row in \code{chat}, finds the most recent row in \code{streams} for the

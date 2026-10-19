@@ -1,10 +1,10 @@
 Package: v2v
 Title: Companion Package for 'From Vibes to Variables'
-Version: 0.3.2
+Version: 0.3.3
 Authors@R:
     person("Alex P.", "Leith", , "aleith@siue.edu",
            role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-7330-2153"))
+           comment = c(ORCID = "0000-0003-1310-6763"))
 Description: Companion R package for the open educational resource
     'Vibes to Variables: A Methods Package for Students New to Research,
     Stats, and Code' by Alex P. Leith. Ships a stratified subset of a 2018 Twitch chat and
@@ -32,8 +32,9 @@ Suggests:
     quarto,
     scales,
     renv,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 Config/testthat/edition: 3
 URL: https://github.com/AURA-Lab-SIUE/v2v-r
 BugReports: https://github.com/AURA-Lab-SIUE/v2v-r/issues
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1
