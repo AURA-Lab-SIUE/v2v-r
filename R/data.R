@@ -41,6 +41,9 @@
 #'     Convert with [clean_dates()] or
 #'     `as.POSIXct(date / 1000, origin = "1970-01-01", tz = "UTC")`.}
 #' }
+#' @section License:
+#'   CC BY 4.0 (see `LICENSE-DATA.md`). The underlying messages are public
+#'   Twitch content and remain subject to Twitch's terms.
 #' @source 1.6 GB (1,717,079,040 byte) tar-format `pg_dump` archive, filename
 #'   `twitch_backup` with no extension, held on the lab's One Touch volume at
 #'   `nonacademic/D_drive/Dissertation/Data/twitch_backup`. The path
@@ -78,6 +81,9 @@
 #'   \item{date}{numeric; Unix epoch in **milliseconds**; same conversion
 #'     rule as [twitch_chat_sample]$date.}
 #' }
+#' @section License:
+#'   CC BY 4.0 (see `LICENSE-DATA.md`). The underlying messages are public
+#'   Twitch content and remain subject to Twitch's terms.
 #' @source Same provenance as [twitch_chat_sample]. Snapshots are taken
 #'   on roughly minute-scale cadence per channel during the collection
 #'   window 2018-11-18 to 2018-11-24.

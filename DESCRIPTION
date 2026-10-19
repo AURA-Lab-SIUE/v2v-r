@@ -12,7 +12,7 @@ Description: Companion R package for the open educational resource
     pedagogical helpers for sampling, intercoder reliability, timestamp
     conversion, and joining the chat and stream tables. Used in SIUE
     MC-451 (Research Methods) and MC-501 (Graduate).
-License: CC BY 4.0
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

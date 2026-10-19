@@ -1,5 +1,9 @@
 # v2v 0.3.2
 
+The package code is now licensed under MIT (`LICENSE.md`); the two bundled Twitch
+datasets and the documentation stay under CC BY 4.0 (`LICENSE-DATA.md`). Nothing
+else changed.
+
 `new_portfolio()` no longer overwrites a project in use. Run a second time on the
 same folder, it used to replace the codebook and every White Paper section with
 blank stubs, without a warning. It now stops and says the project already exists.

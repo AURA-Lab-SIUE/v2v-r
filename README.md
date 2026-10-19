@@ -70,7 +70,9 @@ Two data-quality moments drive Chapter 11:
 
 ## License
 
-CC BY 4.0. Free to use, adapt, and redistribute with attribution. See `LICENSE.md`.
+Code: MIT (see `LICENSE.md`). Data and documentation: CC BY 4.0 (see `LICENSE-DATA.md`).
+The two Twitch datasets are free to use, adapt, and redistribute with attribution; the
+underlying messages are public Twitch content and remain subject to Twitch's terms.
 
 ## Citation
 

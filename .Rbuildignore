@@ -10,3 +10,5 @@
 ^check_deps\.R$
 ^install_irr\.R$
 ^data/v2v-source$
+^LICENSE\.md$
+^LICENSE-DATA\.md$
