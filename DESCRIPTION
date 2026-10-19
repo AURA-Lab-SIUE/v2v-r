@@ -29,6 +29,7 @@ Imports:
     usethis,
     utils
 Suggests:
+    lubridate,
     quarto,
     scales,
     renv,
