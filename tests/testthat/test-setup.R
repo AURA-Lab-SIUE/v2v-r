@@ -32,3 +32,16 @@ test_that("a missing suggested package does not fail setup()", {
   checks <- attr(setup(quiet = TRUE), "checks")
   expect_true(all(checks$kind[checks$item == "quarto"] == "suggested"))
 })
+
+test_that("the VS Code packages are reported but never fail setup()", {
+  checks <- attr(setup(quiet = TRUE), "checks")
+  expect_setequal(checks$item[checks$kind == "vscode"], c("languageserver", "httpgd"))
+  # Only r, required, course, and tool rows decide the result
+  expected <- all(checks$ok[checks$kind %in% c("r", "required", "course", "tool")])
+  expect_identical(as.logical(setup(quiet = TRUE)), expected)
+})
+
+test_that("setup() prints a VS Code section", {
+  out <- cli::cli_fmt(setup())
+  expect_true(any(grepl("VS Code", out)))
+})

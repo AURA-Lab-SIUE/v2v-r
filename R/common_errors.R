@@ -65,5 +65,48 @@
 #' GitHub (v2v is not on CRAN, so `install.packages("v2v")` cannot find it):
 #' `remotes::install_github("AURA-Lab-SIUE/v2v-r", upgrade = "never", force = TRUE)`.
 #'
+#' @section VS Code says R is not attached, or the connection to the server closed:
+#' **Symptom:** The status bar in VS Code reads `R: (not attached)` and the
+#' Workspace panel stays empty, or VS Code says `Connection to server got
+#' closed. Server will not be restarted` or `read ECONNRESET`. Your code still
+#' runs.
+#'
+#' **Cause:** Two helpers run beside R in VS Code: the R extension's session
+#' watcher, which fills the Workspace panel, and the `languageserver` package,
+#' which powers code completion. The R extension before version 3.0.0 cannot
+#' connect to R 4.6 or later; a `languageserver` that failed to install stops
+#' the second helper.
+#'
+#' **Fix:** With the AURA Lab R Companion, run **AURA: Explain an R error** on
+#' the message and select **Update the R extension**. Without it: update R by
+#' REditorSupport in the Extensions view to 3.0.0 or newer, quit VS Code, run
+#' `install.packages("languageserver")` in R on its own (answer No if asked to
+#' compile from source), then open VS Code again and allow it to install
+#' `sess` if it asks.
+#'
+#' @section Stray `[200~` and `[201~` characters around code you run:
+#' **Symptom:** Code sent from a script to the R terminal arrives wrapped in
+#' `[200~` and `[201~`, and R waits with a `+` prompt.
+#'
+#' **Cause:** The workspace setting `r.bracketedPaste` is on. It sends code in a
+#' format meant for a different R console. Copies of the course workspace made
+#' before September 2026 still carry it.
+#'
+#' **Fix:** With the R Companion, run **AURA: Explain an R error** on the
+#' message and select **Turn off bracketed paste for this folder**. Without it:
+#' open Settings, choose the Workspace tab, search for `bracketed`, untick
+#' **R: Bracketed Paste**, and close the R terminal.
+#'
+#' @section `file is in use` or `cannot remove prior installation` on Windows:
+#' **Symptom:** Installing or updating a package prints `file is in use`,
+#' `cannot remove prior installation of package`, or `Warning: restored`.
+#'
+#' **Cause:** An open R session has the package loaded, and Windows will not
+#' replace an open file, so R puts the old version back.
+#'
+#' **Fix:** With the R Companion, run **AURA: Explain an R error** on the
+#' message and select **Close R terminals and install again**. Without it: quit
+#' VS Code completely, open R on its own, and install again there.
+#'
 #' @name common_errors
 NULL

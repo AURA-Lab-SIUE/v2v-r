@@ -17,6 +17,12 @@
 #' - Course packages for the course named in `course`: `janitor` for both
 #'   courses, and for MC 501 also `effectsize`, `lm.beta`, `pwr`, and `renv`.
 #' - Suggested package: `quarto`, the R wrapper used by [deploy_portfolio()].
+#' - VS Code packages: `languageserver` (code completion and help) and `httpgd`
+#'   (plots in a VS Code panel), which the R extension for VS Code uses. They
+#'   are reported, and installed by the fix line, but a missing one does not
+#'   fail the check, so a student working outside VS Code still passes. On R 4.6
+#'   or later a note says the R extension for VS Code must be 3.0.0 or newer:
+#'   earlier versions never connect to R 4.6, so its Workspace panel stays empty.
 #' - Quarto CLI, found on the `PATH` or through [quarto::quarto_path()].
 #' - Git on `PATH` (via `Sys.which("git")`).
 #'
@@ -33,7 +39,7 @@
 #' @return Invisibly returns a logical: `TRUE` if everything required is
 #'   present, `FALSE` otherwise. It carries an attribute, `"checks"`, a
 #'   tibble with one row per item checked and the columns `item`, `kind`
-#'   (`"r"`, `"required"`, `"course"`, `"suggested"`, or `"tool"`), `ok`,
+#'   (`"r"`, `"required"`, `"course"`, `"suggested"`, `"vscode"`, or `"tool"`), `ok`,
 #'   `version`, `minimum`, and `detail`, so a tool can read the result
 #'   without parsing the printed checklist.
 #' @examples
@@ -68,6 +74,10 @@ setup <- function(course = NULL, quiet = FALSE) {
   # be listed here and was never used by the package nor declared in
   # DESCRIPTION, so every student was told to install something for nothing.
   suggested_pkgs <- c("quarto")
+  # What the R extension for VS Code runs beside R. Reported in their own section
+  # and not part of the pass/fail result: the course works in VS Code, but setup()
+  # should not fail for a student checking from plain R or RStudio.
+  vscode_pkgs <- c("languageserver", "httpgd")
   minimum <- c(dplyr = "1.1.0")
 
   checks <- list()
@@ -93,6 +103,7 @@ setup <- function(course = NULL, quiet = FALSE) {
   for (p in required_pkgs) check_pkg(p, "required")
   for (p in course_pkgs) check_pkg(p, "course")
   for (p in suggested_pkgs) check_pkg(p, "suggested")
+  for (p in vscode_pkgs) check_pkg(p, "vscode")
 
   # Look for the CLI on the PATH FIRST, independently of the R wrapper.
   # This check used to read
@@ -139,6 +150,8 @@ print_setup <- function(checks, ok) {
       }
     } else if (row$kind == "suggested") {
       cli::cli_alert_warning("{.pkg {row$item}} (missing, recommended)")
+    } else if (row$kind == "vscode") {
+      cli::cli_alert_warning("{.pkg {row$item}} (missing, needed in VS Code)")
     } else if (row$kind == "tool") {
       cli::cli_alert_danger("{row$item} not found")
     } else if (identical(row$detail, "too old")) {
@@ -159,6 +172,11 @@ print_setup <- function(checks, ok) {
   section("Required R packages", "required")
   section("Course R packages", "course")
   section("Suggested R packages", "suggested")
+  section("VS Code", "vscode")
+  r_ver <- checks$version[checks$kind == "r"]
+  if (length(r_ver) == 1 && !is.na(r_ver) && utils::compareVersion(r_ver, "4.6.0") >= 0) {
+    cli::cli_alert_info("VS Code's R extension must be 3.0.0 or newer for R 4.6. Check it in the Extensions view.")
+  }
   section("Command-line tools", "tool")
 
   # Two kinds of fix, kept apart on purpose. Anything install.packages() can
@@ -169,7 +187,7 @@ print_setup <- function(checks, ok) {
   # span and empty cli_text() calls are the fragile constructs, and this file
   # ships to a whole class at once, so anything clever that fails at runtime
   # breaks setup() for everybody. Bare strings and one inline class per line.
-  pkg_fix <- checks$item[checks$kind %in% c("required", "course", "suggested") & !checks$ok]
+  pkg_fix <- checks$item[checks$kind %in% c("required", "course", "suggested", "vscode") & !checks$ok]
   r_old <- any(checks$kind == "r" & !checks$ok)
   quarto_ok <- checks$ok[checks$item == "Quarto CLI"]
   git_ok <- checks$ok[checks$item == "Git"]

@@ -17,7 +17,7 @@ such as the AURA Lab R Companion use this to read the checks.}
 Invisibly returns a logical: \code{TRUE} if everything required is
 present, \code{FALSE} otherwise. It carries an attribute, \code{"checks"}, a
 tibble with one row per item checked and the columns \code{item}, \code{kind}
-(\code{"r"}, \code{"required"}, \code{"course"}, \code{"suggested"}, or \code{"tool"}), \code{ok},
+(\code{"r"}, \code{"required"}, \code{"course"}, \code{"suggested"}, \code{"vscode"}, or \code{"tool"}), \code{ok},
 \code{version}, \code{minimum}, and \code{detail}, so a tool can read the result
 without parsing the printed checklist.
 }
@@ -41,6 +41,12 @@ reinstalls \code{v2v}). \code{dplyr} must be 1.1.0 or later, because
 \item Course packages for the course named in \code{course}: \code{janitor} for both
 courses, and for MC 501 also \code{effectsize}, \code{lm.beta}, \code{pwr}, and \code{renv}.
 \item Suggested package: \code{quarto}, the R wrapper used by \code{\link[=deploy_portfolio]{deploy_portfolio()}}.
+\item VS Code packages: \code{languageserver} (code completion and help) and \code{httpgd}
+(plots in a VS Code panel), which the R extension for VS Code uses. They
+are reported, and installed by the fix line, but a missing one does not
+fail the check, so a student working outside VS Code still passes. On R 4.6
+or later a note says the R extension for VS Code must be 3.0.0 or newer:
+earlier versions never connect to R 4.6, so its Workspace panel stays empty.
 \item Quarto CLI, found on the \code{PATH} or through \code{\link[quarto:quarto_path]{quarto::quarto_path()}}.
 \item Git on \code{PATH} (via \code{Sys.which("git")}).
 }

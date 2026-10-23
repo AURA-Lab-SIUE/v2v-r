@@ -1,3 +1,19 @@
+# v2v 0.3.5
+
+Released with the AURA Lab R Companion 0.5.3 (labor #rgui, 2026-10-22).
+
+* `setup()` has a **VS Code** section: it reports `languageserver` (code completion
+  and help) and `httpgd` (plots in a VS Code panel), which the R extension for VS Code
+  uses, and adds any missing one to the install line it prints. A missing one does not
+  fail the check, so a student working from plain R still passes. On R 4.6 or later it
+  also notes that VS Code's R extension must be 3.0.0 or newer, because earlier versions
+  never connect to R 4.6 and leave the Workspace panel empty. The `"checks"` table gains
+  the kind `"vscode"`.
+* `?common_errors` gains three sections: `R: (not attached)` or `Connection to server
+  got closed` in VS Code, the stray `[200~` and `[201~` characters, and `file is in use`
+  or `cannot remove prior installation` on Windows. Each names the R Companion's one-click
+  fix first and the manual steps second.
+
 # v2v 0.3.4
 
 * Corrected a stale GitHub path in the 0.3.0 release note: the reinstall command

@@ -79,3 +79,51 @@ GitHub (v2v is not on CRAN, so \code{install.packages("v2v")} cannot find it):
 \code{remotes::install_github("AURA-Lab-SIUE/v2v-r", upgrade = "never", force = TRUE)}.
 }
 
+\section{VS Code says R is not attached, or the connection to the server closed}{
+
+\strong{Symptom:} The status bar in VS Code reads \verb{R: (not attached)} and the
+Workspace panel stays empty, or VS Code says \verb{Connection to server got closed. Server will not be restarted} or \verb{read ECONNRESET}. Your code still
+runs.
+
+\strong{Cause:} Two helpers run beside R in VS Code: the R extension's session
+watcher, which fills the Workspace panel, and the \code{languageserver} package,
+which powers code completion. The R extension before version 3.0.0 cannot
+connect to R 4.6 or later; a \code{languageserver} that failed to install stops
+the second helper.
+
+\strong{Fix:} With the AURA Lab R Companion, run \strong{AURA: Explain an R error} on
+the message and select \strong{Update the R extension}. Without it: update R by
+REditorSupport in the Extensions view to 3.0.0 or newer, quit VS Code, run
+\code{install.packages("languageserver")} in R on its own (answer No if asked to
+compile from source), then open VS Code again and allow it to install
+\code{sess} if it asks.
+}
+
+\section{Stray \verb{[200~} and \verb{[201~} characters around code you run}{
+
+\strong{Symptom:} Code sent from a script to the R terminal arrives wrapped in
+\verb{[200~} and \verb{[201~}, and R waits with a \code{+} prompt.
+
+\strong{Cause:} The workspace setting \code{r.bracketedPaste} is on. It sends code in a
+format meant for a different R console. Copies of the course workspace made
+before September 2026 still carry it.
+
+\strong{Fix:} With the R Companion, run \strong{AURA: Explain an R error} on the
+message and select \strong{Turn off bracketed paste for this folder}. Without it:
+open Settings, choose the Workspace tab, search for \code{bracketed}, untick
+\strong{R: Bracketed Paste}, and close the R terminal.
+}
+
+\section{\verb{file is in use} or \verb{cannot remove prior installation} on Windows}{
+
+\strong{Symptom:} Installing or updating a package prints \verb{file is in use},
+\verb{cannot remove prior installation of package}, or \code{Warning: restored}.
+
+\strong{Cause:} An open R session has the package loaded, and Windows will not
+replace an open file, so R puts the old version back.
+
+\strong{Fix:} With the R Companion, run \strong{AURA: Explain an R error} on the
+message and select \strong{Close R terminals and install again}. Without it: quit
+VS Code completely, open R on its own, and install again there.
+}
+
