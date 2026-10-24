@@ -25,13 +25,24 @@ reported to the console).
 \description{
 Runs a three-step pre-flight checklist before publishing: verifies that the
 \code{renv} library is synchronized, that there are no uncommitted changes in the
-working tree, and that a \verb{_quarto.yml} file exists in the project root. If
+project folder, and that a \verb{_quarto.yml} file exists in the project root. If
 all checks pass, the function renders the Quarto project and publishes it to
-GitHub Pages using \verb{quarto publish}.
+GitHub Pages with the Quarto command line tool (\verb{quarto publish gh-pages}).
 }
 \details{
 This function is designed to be called from the root of a student Quarto
-portfolio project (the directory that contains \verb{_quarto.yml}).
+portfolio project (the directory that contains \verb{_quarto.yml}), or with
+\code{path} pointing at it. The project may sit inside a larger git repository,
+such as the course workspace: the site is published to the \code{gh-pages}
+branch of that repository's \code{origin} remote.
+
+The uncommitted-changes check covers the project folder only, and skips the
+rendered output folder (\code{output-dir} in \verb{_quarto.yml}, \code{docs} by default),
+because every render rewrites it.
+
+On the first publish the \code{origin} remote has no \code{gh-pages} branch, and
+\verb{quarto publish} will not create one without asking. This function creates
+an empty one first, without touching the files in the working folder.
 }
 \examples{
 \dontrun{

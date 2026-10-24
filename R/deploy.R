@@ -2,12 +2,23 @@
 #'
 #' Runs a three-step pre-flight checklist before publishing: verifies that the
 #' `renv` library is synchronized, that there are no uncommitted changes in the
-#' working tree, and that a `_quarto.yml` file exists in the project root. If
+#' project folder, and that a `_quarto.yml` file exists in the project root. If
 #' all checks pass, the function renders the Quarto project and publishes it to
-#' GitHub Pages using `quarto publish`.
+#' GitHub Pages with the Quarto command line tool (`quarto publish gh-pages`).
 #'
 #' This function is designed to be called from the root of a student Quarto
-#' portfolio project (the directory that contains `_quarto.yml`).
+#' portfolio project (the directory that contains `_quarto.yml`), or with
+#' `path` pointing at it. The project may sit inside a larger git repository,
+#' such as the course workspace: the site is published to the `gh-pages`
+#' branch of that repository's `origin` remote.
+#'
+#' The uncommitted-changes check covers the project folder only, and skips the
+#' rendered output folder (`output-dir` in `_quarto.yml`, `docs` by default),
+#' because every render rewrites it.
+#'
+#' On the first publish the `origin` remote has no `gh-pages` branch, and
+#' `quarto publish` will not create one without asking. This function creates
+#' an empty one first, without touching the files in the working folder.
 #'
 #' @param path Path to the Quarto project root. Defaults to the current working
 #'   directory.
@@ -57,21 +68,26 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
   }
 
   # -- Check 2: No uncommitted git changes -------------------------------------
-  git_result <- tryCatch(
-    system2("git", args = c("-C", shQuote(path), "status", "--porcelain"),
-            stdout = TRUE, stderr = FALSE),
-    error = function(e) NULL
-  )
+  # Only the project folder counts, and not its rendered output: every render
+  # rewrites the output folder (the PDF differs on each one), so counting it
+  # failed this check on every run after the first.
+  output_dir <- portfolio_output_dir(path)
+  git_result <- git_run(path, c(
+    "status", "--porcelain", "--", ".",
+    shQuote(paste0(":(exclude)", output_dir))
+  ))
 
   if (is.null(git_result)) {
     cli::cli_alert_warning("git not available - skipping uncommitted-changes check")
-  } else if (length(git_result) == 0) {
+  } else if (!git_result$ok) {
+    cli::cli_alert_warning("not inside a git repository - skipping uncommitted-changes check")
+  } else if (length(git_result$out) == 0) {
     cli::cli_alert_success("no uncommitted changes")
   } else {
     cli::cli_alert_danger("uncommitted changes detected")
     cli::cli_inform(c(
       "i" = "Commit or stash your changes before deploying.",
-      " " = paste(git_result, collapse = "\n")
+      " " = paste(git_result$out, collapse = "\n")
     ))
     ok <- FALSE
   }
@@ -104,7 +120,16 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
       error = function(e) e
     )
     if (inherits(result, "error")) {
-      cli::cli_alert_danger("Render failed: {result$message}")
+      cli::cli_progress_done(result = "failed")
+      # The quarto package's own message can carry raw LaTeX log text; its
+      # first line is the part a student needs.
+      first_line <- strsplit(conditionMessage(result), "\n", fixed = TRUE)[[1]][1]
+      cli::cli_alert_danger("Render failed: {first_line}")
+      cli::cli_inform(c(
+        "i" = "If the output above says {.strong No TeX installation was detected},
+               the PDF needs TinyTeX. In the terminal, run {.code quarto install tinytex},
+               then quit R, open it again, and re-run {.fn v2v::deploy_portfolio}."
+      ))
       return(invisible(FALSE))
     }
     cli::cli_progress_done()
@@ -120,17 +145,104 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
   }
 
   # -- Publish ------------------------------------------------------------------
+  # quarto::quarto_publish_site() publishes to Posit Connect through rsconnect;
+  # it has no GitHub Pages route, so this calls the Quarto CLI directly.
   cli::cli_progress_step("Publishing to GitHub Pages")
-  pub_result <- tryCatch(
-    quarto::quarto_publish_site(input = path, server = "gh-pages", prompt = FALSE),
-    error = function(e) e
-  )
-  if (inherits(pub_result, "error")) {
-    cli::cli_alert_danger("Publish failed: {pub_result$message}")
-    return(invisible(FALSE))
+  failed <- function(msg) {
+    cli::cli_progress_done(result = "failed")
+    cli::cli_alert_danger("Publish failed: {msg}")
+    invisible(FALSE)
+  }
+
+  quarto_bin <- quarto_cli_path()
+  if (!nzchar(quarto_bin)) {
+    return(failed("the Quarto CLI was not found. Run v2v::setup() for the fix."))
+  }
+
+  branch_msg <- ensure_gh_pages(path)
+  if (!is.null(branch_msg)) return(failed(branch_msg))
+
+  # quarto publish reads the git remote from its working directory, not from
+  # the path it is given, so it runs from inside the project.
+  old_wd <- setwd(path)
+  on.exit(setwd(old_wd), add = TRUE)
+  pub <- suppressWarnings(tryCatch(
+    system2(quarto_bin,
+            args = c("publish", "gh-pages", "--no-prompt", "--no-render"),
+            stdout = TRUE, stderr = TRUE),
+    error = function(e) structure(conditionMessage(e), status = 1L)
+  ))
+  setwd(old_wd)
+  pub_status <- attr(pub, "status")
+  if (!is.null(pub_status) && pub_status != 0) {
+    return(failed(paste(cli::ansi_strip(pub), collapse = "\n")))
   }
   cli::cli_progress_done()
+
+  published <- grep("Published to", cli::ansi_strip(pub), value = TRUE)
+  if (length(published) > 0) {
+    cli::cli_alert_info(trimws(sub(".*Published to", "Published to", published[1])))
+  }
   cli::cli_alert_success("Portfolio live on GitHub Pages.")
 
   invisible(TRUE)
+}
+
+# The output folder named in _quarto.yml (`output-dir:`), "docs" when unset.
+portfolio_output_dir <- function(path) {
+  yml <- file.path(path, "_quarto.yml")
+  if (!file.exists(yml)) return("docs")
+  hit <- grep("^\\s*output-dir:", readLines(yml, warn = FALSE), value = TRUE)
+  if (length(hit) == 0) return("docs")
+  dir <- trimws(gsub("[\"']", "", sub("^\\s*output-dir:", "", hit[1])))
+  if (nzchar(dir)) dir else "docs"
+}
+
+# Run git in `path`. Returns list(ok, out), or NULL when git cannot be run.
+git_run <- function(path, args) {
+  out <- suppressWarnings(tryCatch(
+    system2("git", args = c("-C", shQuote(path), args), stdout = TRUE, stderr = TRUE),
+    error = function(e) NULL
+  ))
+  if (is.null(out)) return(NULL)
+  status <- attr(out, "status")
+  list(ok = is.null(status) || status == 0, out = as.character(out))
+}
+
+quarto_cli_path <- function() {
+  bin <- unname(Sys.which("quarto"))
+  if (!nzchar(bin) && requireNamespace("quarto", quietly = TRUE)) {
+    bin <- tryCatch(quarto::quarto_path(), error = function(e) NULL)
+    if (is.null(bin)) bin <- ""
+  }
+  bin
+}
+
+# Make sure the origin remote has a gh-pages branch. Returns NULL when it does
+# (or now does), otherwise a message saying what stopped it.
+ensure_gh_pages <- function(path) {
+  origin <- git_run(path, c("remote", "get-url", "origin"))
+  if (is.null(origin)) return("git was not found. Run v2v::setup() for the fix.")
+  if (!origin$ok) {
+    return("this folder is not connected to a GitHub repository (git has no origin remote).")
+  }
+
+  heads <- git_run(path, c("ls-remote", "--heads", "origin", "gh-pages"))
+  if (is.null(heads) || !heads$ok) {
+    return(paste(c("could not reach the GitHub repository.", heads$out), collapse = "\n"))
+  }
+  if (any(grepl("refs/heads/gh-pages", heads$out, fixed = TRUE))) return(NULL)
+
+  # First publish. Build an empty commit from the empty tree and push it as
+  # gh-pages: the working folder and the current branch are never touched.
+  empty <- tempfile()
+  on.exit(unlink(empty), add = TRUE)
+  file.create(empty)
+  tree <- git_run(path, c("hash-object", "-w", "-t", "tree", shQuote(empty)))
+  if (is.null(tree) || !tree$ok) return(paste(c("could not start the gh-pages branch.", tree$out), collapse = "\n"))
+  commit <- git_run(path, c("commit-tree", tree$out[1], "-m", shQuote("Initializing gh-pages branch")))
+  if (is.null(commit) || !commit$ok) return(paste(c("could not start the gh-pages branch.", commit$out), collapse = "\n"))
+  push <- git_run(path, c("push", "origin", paste0(commit$out[1], ":refs/heads/gh-pages")))
+  if (is.null(push) || !push$ok) return(paste(c("could not create the gh-pages branch on GitHub.", push$out), collapse = "\n"))
+  NULL
 }

@@ -1,3 +1,20 @@
+# v2v 0.3.6
+
+* `deploy_portfolio()` publishes to GitHub Pages. It called
+  `quarto::quarto_publish_site()`, which publishes to Posit Connect through rsconnect
+  and has no GitHub Pages route, so every deploy ended in `Publish failed:` with an
+  empty message. It now runs `quarto publish gh-pages` from inside the project.
+* On the first deploy, `deploy_portfolio()` creates an empty `gh-pages` branch on the
+  `origin` remote before publishing, because `quarto publish` will not create one
+  without asking. It does this without touching the working folder or switching
+  branches. A project with no `origin` remote stops with a message saying so.
+* The uncommitted-changes check covers the project folder only and skips its rendered
+  output folder (`output-dir` in `_quarto.yml`, `docs` by default). Every render
+  rewrites that folder, so the check had failed on every deploy after the first, and
+  an unsaved file elsewhere in the course workspace no longer blocks a deploy.
+* A failed render or publish now prints the actual error. A render that fails for lack
+  of a TeX installation names the fix, `quarto install tinytex`.
+
 # v2v 0.3.5
 
 Released with the AURA Lab R Companion 0.5.3 (labor #rgui, 2026-10-22).
