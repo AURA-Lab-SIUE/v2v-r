@@ -94,11 +94,25 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
 
   # -- Check 3: _quarto.yml exists ---------------------------------------------
   quarto_yml <- file.path(path, "_quarto.yml")
+  # This check only looks for the file; it does not validate it, so the message says "found".
   if (file.exists(quarto_yml)) {
-    cli::cli_alert_success("_quarto.yml valid")
+    cli::cli_alert_success("_quarto.yml found in {.path {path}}")
   } else {
     cli::cli_alert_danger("_quarto.yml not found in {.path {path}}")
-    cli::cli_inform(c("i" = "Run this function from your Quarto project root."))
+    # A student running this from the course workspace's top folder usually has the project one
+    # folder down (new_portfolio() makes it there), so name that folder instead of the jargon
+    # "project root".
+    subdirs <- list.dirs(path, recursive = FALSE)
+    projects <- basename(subdirs[file.exists(file.path(subdirs, "_quarto.yml"))])
+    if (length(projects) == 1) {
+      cli::cli_inform(c(
+        "i" = "Your project looks like the {.path {projects}} folder. Run {.code v2v::deploy_portfolio(\"{projects}\")}."
+      ))
+    } else {
+      cli::cli_inform(c(
+        "i" = "Give the folder {.fn v2v::new_portfolio} made, the one that holds _quarto.yml, for example {.code v2v::deploy_portfolio(\"v2v-whitepaper\")}."
+      ))
+    }
     ok <- FALSE
   }
 
@@ -148,8 +162,13 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
   # quarto::quarto_publish_site() publishes to Posit Connect through rsconnect;
   # it has no GitHub Pages route, so this calls the Quarto CLI directly.
   cli::cli_progress_step("Publishing to GitHub Pages")
+  # The step belongs to this function's frame. Called from inside failed(), a bare
+  # cli_progress_done() looked in failed()'s own frame, found no step, and did nothing, so the
+  # step closed itself with a success tick when deploy_portfolio() returned: students saw
+  # "Publish failed" followed by a green "Publishing to GitHub Pages".
+  deploy_env <- environment()
   failed <- function(msg) {
-    cli::cli_progress_done(result = "failed")
+    cli::cli_progress_done(result = "failed", .envir = deploy_env)
     cli::cli_alert_danger("Publish failed: {msg}")
     invisible(FALSE)
   }
