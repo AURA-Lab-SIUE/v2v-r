@@ -1,9 +1,3 @@
-# v2v (development version)
-
-* `run_chi_square()` lines up every value in one column. "Smallest expected count" was
-  one character wider than the label column, so its value sat out of line with the rows
-  above it.
-
 # v2v 0.3.7
 
 Released with the AURA Lab R Companion 0.6.0 (labor #rgui, 2026-10-31).
@@ -16,6 +10,9 @@ Released with the AURA Lab R Companion 0.6.0 (labor #rgui, 2026-10-31).
   your project instead of saying "project root".
 * `deploy_portfolio()` checks for the quarto R package before rendering and says how to
   install it. Without it, the render failed with "there is no package called 'quarto'".
+* `run_chi_square()` lines up every value in one column. "Smallest expected count" was
+  one character wider than the label column, so its value sat out of line with the rows
+  above it.
 
 # v2v 0.3.6
 
