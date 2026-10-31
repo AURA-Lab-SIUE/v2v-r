@@ -6,6 +6,8 @@
 * `deploy_portfolio()`: the `_quarto.yml` check says "found" (it checks that the file is
   there, not that it is valid), and when the file is missing it names the folder that holds
   your project instead of saying "project root".
+* `deploy_portfolio()` checks for the quarto R package before rendering and says how to
+  install it. Without it, the render failed with "there is no package called 'quarto'".
 
 # v2v 0.3.6
 

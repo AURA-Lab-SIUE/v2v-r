@@ -23,9 +23,10 @@ pre-flight check failed (no error is thrown; the specific failure is
 reported to the console).
 }
 \description{
-Runs a three-step pre-flight checklist before publishing: verifies that the
+Runs a pre-flight checklist before publishing: verifies that the
 \code{renv} library is synchronized, that there are no uncommitted changes in the
-project folder, and that a \verb{_quarto.yml} file exists in the project root. If
+project folder, that a \verb{_quarto.yml} file exists in the project root, and
+(when rendering) that the quarto R package is installed. If
 all checks pass, the function renders the Quarto project and publishes it to
 GitHub Pages with the Quarto command line tool (\verb{quarto publish gh-pages}).
 }
