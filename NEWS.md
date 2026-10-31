@@ -1,4 +1,6 @@
-# v2v (development version)
+# v2v 0.3.7
+
+Released with the AURA Lab R Companion 0.6.0 (labor #rgui, 2026-10-31).
 
 * `deploy_portfolio()`: when publishing fails, the "Publishing to GitHub Pages" step now
   ends with a cross. It ended with a green tick right after "Publish failed:", because the
