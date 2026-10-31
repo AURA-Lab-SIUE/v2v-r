@@ -1,3 +1,12 @@
+# v2v (development version)
+
+* `deploy_portfolio()`: when publishing fails, the "Publishing to GitHub Pages" step now
+  ends with a cross. It ended with a green tick right after "Publish failed:", because the
+  step was closed from inside a helper function that could not see it.
+* `deploy_portfolio()`: the `_quarto.yml` check says "found" (it checks that the file is
+  there, not that it is valid), and when the file is missing it names the folder that holds
+  your project instead of saying "project root".
+
 # v2v 0.3.6
 
 * `deploy_portfolio()` publishes to GitHub Pages. It called
