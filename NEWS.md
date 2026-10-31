@@ -1,4 +1,6 @@
-# v2v (development version)
+# v2v 0.3.7
+
+Released with the AURA Lab R Companion 0.6.0 (labor #rgui, 2026-10-31).
 
 * `deploy_portfolio()`: when publishing fails, the "Publishing to GitHub Pages" step now
   ends with a cross. It ended with a green tick right after "Publish failed:", because the
@@ -6,6 +8,8 @@
 * `deploy_portfolio()`: the `_quarto.yml` check says "found" (it checks that the file is
   there, not that it is valid), and when the file is missing it names the folder that holds
   your project instead of saying "project root".
+* `deploy_portfolio()` checks for the quarto R package before rendering and says how to
+  install it. Without it, the render failed with "there is no package called 'quarto'".
 
 # v2v 0.3.6
 

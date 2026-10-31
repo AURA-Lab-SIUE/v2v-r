@@ -111,3 +111,17 @@ test_that("deploy_portfolio() renders and publishes a nested project to gh-pages
   expect_true("index.html" %in% published)
   expect_equal(git(w$ws, "branch", "--show-current"), "main")
 })
+
+test_that("a missing quarto R package stops the deploy before rendering, with the install line", {
+  dir <- withr::local_tempdir()
+  writeLines(c("project:", "  type: website"), file.path(dir, "_quarto.yml"))
+  local_mocked_bindings(has_quarto_pkg = function() FALSE)
+  msgs <- deploy_messages(dir, ask = FALSE)
+  expect_match(msgs, "quarto R package is not installed", fixed = TRUE)
+  expect_match(msgs, "install.packages(\"quarto\")", fixed = TRUE)
+  expect_match(msgs, "Deploy cancelled", fixed = TRUE)
+  expect_false(suppressMessages(deploy_portfolio(dir, ask = FALSE)))
+  # Publishing a site rendered earlier needs no quarto R package
+  local_mocked_bindings(quarto_cli_path = function() "")
+  expect_no_match(deploy_messages(dir, render = FALSE, ask = FALSE), "quarto R package")
+})

@@ -1,8 +1,9 @@
 #' Deploy a student portfolio to GitHub Pages
 #'
-#' Runs a three-step pre-flight checklist before publishing: verifies that the
+#' Runs a pre-flight checklist before publishing: verifies that the
 #' `renv` library is synchronized, that there are no uncommitted changes in the
-#' project folder, and that a `_quarto.yml` file exists in the project root. If
+#' project folder, that a `_quarto.yml` file exists in the project root, and
+#' (when rendering) that the quarto R package is installed. If
 #' all checks pass, the function renders the Quarto project and publishes it to
 #' GitHub Pages with the Quarto command line tool (`quarto publish gh-pages`).
 #'
@@ -116,6 +117,21 @@ deploy_portfolio <- function(path = ".", render = TRUE, ask = interactive()) {
     ok <- FALSE
   }
 
+  # -- Check 4: the quarto R package, which renders the site --------------------
+  # Without it the render step failed with "there is no package called 'quarto'"
+  # and a TinyTeX hint that does not apply.
+  if (render) {
+    if (has_quarto_pkg()) {
+      cli::cli_alert_success("quarto R package installed")
+    } else {
+      cli::cli_alert_danger("the quarto R package is not installed")
+      cli::cli_inform(c(
+        "i" = "Run {.code install.packages(\"quarto\")}, or in VS Code run {.strong AURA: Install what is missing}."
+      ))
+      ok <- FALSE
+    }
+  }
+
   if (!ok) {
     cli::cli_alert_danger(
       "Deploy cancelled: fix the issues above, then re-run {.fn v2v::deploy_portfolio}."
@@ -227,6 +243,8 @@ git_run <- function(path, args) {
   status <- attr(out, "status")
   list(ok = is.null(status) || status == 0, out = as.character(out))
 }
+
+has_quarto_pkg <- function() requireNamespace("quarto", quietly = TRUE)
 
 quarto_cli_path <- function() {
   bin <- unname(Sys.which("quarto"))
