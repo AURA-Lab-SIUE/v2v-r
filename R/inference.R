@@ -210,12 +210,12 @@ run_chi_square <- function(data, x, y) {
   cli::cli_text("{x_name} by {y_name}")
   cli::cli_verbatim(c(
     "",
-    sprintf("  %-22s %d", "N", n),
-    sprintf("  %-22s %s", "Chi-squared", num(unname(raw$statistic))),
-    sprintf("  %-22s %s", "df", unname(raw$parameter)),
-    sprintf("  %-22s %s", "p-value", p_fmt),
-    sprintf("  %-22s %s  (%s)", "Cramer's V", num(v), interp),
-    sprintf("  %-22s %s%s", "Smallest expected count", num(min_expected),
+    sprintf("  %-23s %d", "N", n),
+    sprintf("  %-23s %s", "Chi-squared", num(unname(raw$statistic))),
+    sprintf("  %-23s %s", "df", unname(raw$parameter)),
+    sprintf("  %-23s %s", "p-value", p_fmt),
+    sprintf("  %-23s %s  (%s)", "Cramer's V", num(v), interp),
+    sprintf("  %-23s %s%s", "Smallest expected count", num(min_expected),
             if (min_expected < 5) "  (below 5: the test is unreliable)" else ""),
     "",
     sprintf("  The association between %s and %s is %s and %s in size.",

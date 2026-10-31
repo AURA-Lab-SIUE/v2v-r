@@ -1,3 +1,9 @@
+# v2v (development version)
+
+* `run_chi_square()` lines up every value in one column. "Smallest expected count" was
+  one character wider than the label column, so its value sat out of line with the rows
+  above it.
+
 # v2v 0.3.7
 
 Released with the AURA Lab R Companion 0.6.0 (labor #rgui, 2026-10-31).
