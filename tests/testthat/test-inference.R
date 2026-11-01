@@ -33,6 +33,15 @@ test_that("run_chi_square() matches chisq.test() and reports the smallest expect
   expect_true(any(grepl("chisq.test(xtabs(~ g + x, data = df))", out, fixed = TRUE)))
 })
 
+test_that("run_chi_square() prints every value in one column", {
+  out <- suppressWarnings(cli::cli_fmt(run_chi_square(df, x = g, y = x)))
+  rows <- "^  (N|Chi-squared|df|p-value|Cramer's V|Smallest expected count) +"
+  starts <- attr(regexpr(rows, out), "match.length")
+  starts <- starts[starts > 0]
+  expect_length(starts, 6)
+  expect_length(unique(starts), 1)
+})
+
 test_that("an exact p-value is printed without a leading zero", {
   out <- cli::cli_fmt(run_t_test(df, value = y, group = g))
   p <- t.test(y ~ g, data = df)$p.value
