@@ -181,6 +181,7 @@ run_chi_square <- function(data, x, y) {
   n    <- length(xs)
 
   tbl <- table(xs, ys)
+  names(dimnames(tbl)) <- c(x_name, y_name)
   raw <- stats::chisq.test(tbl)
 
   k <- min(nrow(tbl), ncol(tbl)) - 1L
@@ -218,6 +219,12 @@ run_chi_square <- function(data, x, y) {
     sprintf("  %-23s %s%s", "Smallest expected count", num(min_expected),
             if (min_expected < 5) "  (below 5: the test is unreliable)" else ""),
     "",
+    "  Expected counts if the two were unrelated (each should be at least 5):",
+    paste0("    ", utils::capture.output(print(round(raw$expected, 1)))[-1]),
+    "",
+    "  Standardized residuals (beyond 2 or -2 drives the result):",
+    paste0("    ", utils::capture.output(print(round(raw$stdres, 2)))[-1]),
+    "",
     sprintf("  The association between %s and %s is %s and %s in size.",
             x_name, y_name, sig_word, interp),
     "",
@@ -229,6 +236,8 @@ run_chi_square <- function(data, x, y) {
 
   invisible(list(
     chi_sq         = unname(raw$statistic),
+    expected       = raw$expected,
+    stdres         = raw$stdres,
     df             = unname(raw$parameter),
     p_value        = raw$p.value,
     n              = n,

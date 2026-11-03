@@ -1,3 +1,22 @@
+# v2v 0.3.9
+
+Owner 2026-11-03 (q-20261103-0005 = A): the statistics blocks students read are also under the
+novice ceiling, so each test is one line, and the helper prints the plain-R equivalent.
+
+* `run_anova(data, value, group)` and `run_regression(data, outcome, predictor)` join
+  `run_t_test()` and `run_chi_square()`: F, df, p, eta and omega squared, Welch's F, and Tukey's
+  pairs for the ANOVA; slope, intercept, standardized slope, R-squared, and the F-test for the
+  regression. Both print the `aov()` / `lm()` lines they wrap.
+  `run_regression()` codes a TRUE/FALSE or two-level predictor as 0 and 1, so the slope is the
+  gap between the groups (the t-test written as a line, Chapter 13).
+* `run_chi_square()` now also prints the expected counts and the standardized residuals, the two
+  checks MC 501 used to pull out with `pluck()`.
+* `crosstab(data, row, col)` prints the counts grid and the row-share grid that `count()` plus
+  `pivot_wider()` built by hand.
+* `flag_outliers(data, value, group)` returns the rows beyond the 1.5 IQR whiskers.
+* `twitch_viewers_over_time()` returns the six-hour viewer totals by game category that the
+  Chapter 12 line chart draws (built by `data-raw/build_viewers.R`).
+
 # v2v 0.3.8
 
 Owner 2026-11-03: student-facing R in MC 451 and MC 501 stays at one function or a short
