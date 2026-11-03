@@ -112,3 +112,14 @@
 #' }
 #' @source Built from [twitch_streams_sample] by `data-raw/build_channels.R`.
 "twitch_channels_sample"
+
+#' Concurrent viewers by six-hour block and game category
+#'
+#' The table [twitch_viewers_over_time()] returns: total concurrent viewers in
+#' each six-hour block of the November 18 to 24, 2018 window, for the five
+#' most-streamed game categories plus `Other`. Built from
+#' `twitch_streams_sample` by `data-raw/build_viewers.R`.
+#'
+#' @format A tibble with columns `six_hour` (POSIXct, UTC), `category`
+#'   (factor, six levels), and `total_viewers` (integer).
+"twitch_viewers_sample"
