@@ -1,6 +1,6 @@
 Package: v2v
 Title: Companion Package for 'From Vibes to Variables'
-Version: 0.3.8
+Version: 0.3.9
 Authors@R:
     person("Alex P.", "Leith", , "aleith@siue.edu",
            role = c("aut", "cre"),
@@ -27,9 +27,11 @@ Imports:
     readr,
     rlang,
     tibble,
+    tidyr,
     usethis,
     utils
 Suggests:
+    forcats,
     lubridate,
     quarto,
     scales,
