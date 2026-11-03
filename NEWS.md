@@ -7,6 +7,8 @@ novice ceiling, so each test is one line, and the helper prints the plain-R equi
   `run_t_test()` and `run_chi_square()`: F, df, p, eta and omega squared, Welch's F, and Tukey's
   pairs for the ANOVA; slope, intercept, standardized slope, R-squared, and the F-test for the
   regression. Both print the `aov()` / `lm()` lines they wrap.
+  `run_regression()` codes a TRUE/FALSE or two-level predictor as 0 and 1, so the slope is the
+  gap between the groups (the t-test written as a line, Chapter 13).
 * `run_chi_square()` now also prints the expected counts and the standardized residuals, the two
   checks MC 501 used to pull out with `pluck()`.
 * `crosstab(data, row, col)` prints the counts grid and the row-share grid that `count()` plus

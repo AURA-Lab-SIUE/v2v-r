@@ -11,7 +11,8 @@ run_regression(data, outcome, predictor)
 
 \item{outcome}{Unquoted name of the numeric outcome variable.}
 
-\item{predictor}{Unquoted name of the numeric predictor.}
+\item{predictor}{Unquoted name of the predictor: a number, or a two-level
+column (TRUE/FALSE or a two-level factor), which is coded 0 and 1.}
 }
 \value{
 A list (returned invisibly) with \code{slope}, \code{intercept}, \code{beta}

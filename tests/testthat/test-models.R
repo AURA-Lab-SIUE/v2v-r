@@ -75,3 +75,13 @@ test_that("twitch_viewers_over_time() has six categories and six-hour blocks", {
   expect_true("Other" %in% levels(v$category))
   expect_true(all(as.integer(format(v$six_hour, "%H", tz = "UTC")) %% 6 == 0))
 })
+
+test_that("run_regression() codes a two-level predictor 0/1, so the slope is the group gap", {
+  d2 <- data.frame(y = c(1, 2, 3, 11, 12, 13), g = rep(c(FALSE, TRUE), each = 3))
+  r <- suppressMessages(run_regression(d2, outcome = y, predictor = g))
+  expect_equal(r$slope, 10)
+  expect_equal(r$intercept, 2)
+  d2$f <- factor(rep(c("a", "b"), each = 3))
+  expect_equal(suppressMessages(run_regression(d2, outcome = y, predictor = f))$slope, 10)
+  expect_error(run_regression(data.frame(y = 1:3, z = c("a", "b", "c")), outcome = y, predictor = z), "two levels")
+})

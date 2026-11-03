@@ -114,7 +114,8 @@ run_anova <- function(data, value, group) {
 #'
 #' @param data A data frame containing the two columns.
 #' @param outcome Unquoted name of the numeric outcome variable.
-#' @param predictor Unquoted name of the numeric predictor.
+#' @param predictor Unquoted name of the predictor: a number, or a two-level
+#'   column (TRUE/FALSE or a two-level factor), which is coded 0 and 1.
 #' @return A list (returned invisibly) with `slope`, `intercept`, `beta`
 #'   (the standardized slope), `r_squared`, `f`, `df_model`, `df_residual`,
 #'   `p_value`, `n`, and `raw` (the [stats::lm()] fit).
@@ -131,6 +132,16 @@ run_regression <- function(data, outcome, predictor) {
 
   ys <- dplyr::pull(data, !!out_expr)
   xs <- dplyr::pull(data, !!pre_expr)
+  # A two-level predictor (TRUE/FALSE, or a factor with two levels) is coded 0/1, so the slope is
+  # the gap between the two groups, the t-test written as a line (Chapter 13).
+  if (is.logical(xs)) xs <- as.numeric(xs)
+  if (is.factor(xs) || is.character(xs)) {
+    lv <- levels(factor(xs))
+    if (length(lv) != 2L) {
+      cli::cli_abort("{.arg {pre_name}} must be a number or have exactly two levels; found {length(lv)}.")
+    }
+    xs <- as.numeric(factor(xs, levels = lv)) - 1
+  }
   keep <- !is.na(ys) & !is.na(xs)
   d <- data.frame(y = ys[keep], x = xs[keep])
 
