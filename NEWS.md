@@ -1,3 +1,19 @@
+# v2v 0.3.8
+
+Owner 2026-11-03: student-facing R in MC 451 and MC 501 stays at one function or a short
+tidyverse pipe. Two helpers take the long-form wrangling out of the Data Wrangling worksheet.
+
+* `twitch_channels()` returns the channel lookup table (one row per channel: `main_game`,
+  `is_gaming`, `channel_type`, `median_viewers`, `viewer_band`), so labeling the channels is
+  one `left_join()`. The help page states the non-gaming category list and the 5,000 and
+  20,000 viewer cutoffs, and `data-raw/build_channels.R` shows the dplyr pipeline that builds
+  it. The shipped data gains `twitch_channels_sample`.
+* `write_coding_form()` writes the thirty messages to code as a three-column CSV, creates the
+  `data` folder if needed, and never overwrites a form that already exists, so rendering the
+  worksheet cannot wipe out typed codes. It replaces a `dir.create()` plus `if (!file.exists())`
+  block in the worksheet.
+* readr joins Imports (for `write_coding_form()`).
+
 # v2v 0.3.7
 
 Released with the AURA Lab R Companion 0.6.0 (labor #rgui, 2026-10-31).

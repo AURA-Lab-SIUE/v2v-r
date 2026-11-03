@@ -88,3 +88,27 @@
 #'   on roughly minute-scale cadence per channel during the collection
 #'   window 2018-11-18 to 2018-11-24.
 "twitch_streams_sample"
+
+#' Twitch channel lookup table
+#'
+#' One row per channel in [twitch_chat_sample], with the channel-level labels
+#' the Chapter 11 analysis uses. Load it with [twitch_channels()], which also
+#' documents the two judgment calls inside it (the non-gaming category list
+#' and the 5,000 and 20,000 viewer cutoffs).
+#'
+#' @format A tibble with 50 rows and 6 variables:
+#' \describe{
+#'   \item{channel}{character; bare channel name, the join key.}
+#'   \item{main_game}{character; the category the channel streamed most often
+#'     across its snapshots. `NA` for the two channels that never recorded one.}
+#'   \item{is_gaming}{logical; `TRUE` unless `main_game` is on the non-gaming
+#'     list. `NA` when `main_game` is `NA`.}
+#'   \item{channel_type}{factor with levels `gaming` and `non-gaming`;
+#'     `is_gaming` as words.}
+#'   \item{median_viewers}{numeric; the channel's median concurrent viewers
+#'     across its snapshots.}
+#'   \item{viewer_band}{factor with levels `small`, `medium`, `large`;
+#'     `median_viewers` cut at 5,000 and 20,000.}
+#' }
+#' @source Built from [twitch_streams_sample] by `data-raw/build_channels.R`.
+"twitch_channels_sample"
