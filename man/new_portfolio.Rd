@@ -22,7 +22,7 @@ sections as separate \code{.qmd} files, an abstract, a reflection, a references
 stub, plus the working directories that feed them (weekly journals, the
 codebook, a data tree with \verb{data/raw/} gitignored, and a figures directory).
 Also writes a \verb{_quarto.yml} configured as a Quarto Book. Wraps
-\code{\link[usethis:create_project]{usethis::create_project()}} so the project is also an RStudio-recognized
+\code{\link[usethis:create_package]{usethis::create_project()}} so the project is also an RStudio-recognized
 project.
 }
 \details{
